@@ -8,50 +8,178 @@ import profileImage from "../public/assests/AM.png";
 import zenny from "../public/assests/p1.png";
 import profileImage1 from "../public/assests/my1..png";
 import FF from "../public/assests/FF.jpeg";
+import GG from "../public/assests/GG.png";
+import VP from "../public/assests/VP.png";
 
-import { IoIosMoon } from "react-icons/io";
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
 import { FaInstagram } from "react-icons/fa";
+import { FaFacebook } from "react-icons/fa";
+import { IoMdDownload } from "react-icons/io";
+import { GoMoveToTop } from "react-icons/go";
 import StatusDot from "../components/StatusDot";
 import Typewriter from "../components/Typewriter";
+import { Patrick_Hand } from "next/font/google";
+
+const patrickHand = Patrick_Hand({ subsets: ["latin"], weight: "400" });
+
+// Boxes carousel: shows 2 cards at a time, auto-scrolls left, with arrows
+function BoxesScroller() {
+  const trackRef = React.useRef<HTMLDivElement | null>(null);
+  const [cardWidth, setCardWidth] = React.useState(0);
+  const [distance, setDistance] = React.useState(0);
+
+  // Measure approximate card width based on container halves with gap
+  React.useEffect(() => {
+    const handleResize = () => {
+      const container = trackRef.current?.parentElement as HTMLElement | null;
+      if (!container) return;
+      const rect = container.getBoundingClientRect();
+      const gap = 48; // px total horizontal gap
+      const half = (rect.width - gap) / 2;
+      setCardWidth(half * 0.85);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Compute half of the track width (one full set) for seamless loop
+  React.useEffect(() => {
+    const compute = () => {
+      const el = trackRef.current;
+      if (!el) return;
+      const half = el.scrollWidth / 2; // two identical sets => half is one cycle
+      setDistance(half);
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, [cardWidth]);
+
+  // Card template
+  const Card = ({ title, children }: { title: string; children: React.ReactNode }) => (
+    <div className="shrink-0 px-4" style={{ width: `${cardWidth}px` }}>
+      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-lg min-h-64 h-full flex flex-col justify-start">
+        <h3 className="text-purple-800 font-semibold mb-4 text-2xl text-center">{title}</h3>
+        <div className="flex flex-wrap gap-3 justify-center items-center">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="relative w-full py-2">
+      <div className="overflow-hidden w-full px-12 md:px-24">
+        <div
+          ref={trackRef}
+          className="boxes-track flex items-stretch gap-6"
+          style={{ ['--distance' as any]: `${distance}px`, ['--duration' as any]: '25s' }}
+        >
+          {/* Original 4 cards */}
+          <Card title="Skills">
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">CSS</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">PHP</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">C++</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">C</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">MySQL</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">MongoDB</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">React</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Node.js</span>
+          </Card>
+          <Card title="Hobbies">
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Athletics</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Dancing</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Reading</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Traveling</span>
+          </Card>
+          <Card title="Education">
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">BSc(Hons) in Information Technology - Specializing in Software Engineering - SLIIT</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Bandarawela Central College -AL & OL</span>
+          </Card>
+          <Card title="Experience">
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent text-center">BOC - Job Skills Development Training Programme for School Leavers (Andaulpotha Branch - 2022)</span>
+          </Card>
+
+          {/* Duplicate set for seamless loop */}
+          <Card title="Skills">
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">CSS</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">PHP</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">C++</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">C</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">MySQL</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">MongoDB</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">React</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Node.js</span>
+          </Card>
+          <Card title="Hobbies">
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Athletics</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Dancing</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Reading</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Traveling</span>
+          </Card>
+          <Card title="Education">
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">BSc(Hons) in Information Technology - Specializing in Software Engineering - SLIIT</span>
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Bandarawela Central College -AL & OL</span>
+          </Card>
+          <Card title="Experience">
+            <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">BOC-Job Skills Development Training Programme for School Leavers (Andaulpotha Branch-2022)</span>
+          </Card>
+        </div>
+      </div>
+      <style jsx>{`
+        .boxes-track {
+          animation: marquee var(--duration) linear infinite;
+          will-change: transform;
+        }
+        @keyframes marquee {
+          from { transform: translateX(0); }
+          to { transform: translateX(calc(-1 * var(--distance))); }
+        }
+      `}</style>
+    </div>
+  );
+}
 
 export default function Home() {
-  const [activeSection, setActiveSection] = React.useState<string>("Home");
+  const [activeSection, setActiveSection] = React.useState<string>("None");
   const [homeAnimKey, setHomeAnimKey] = React.useState<number>(0);
   const [contactAnimKey, setContactAnimKey] = React.useState<number>(0);
 
   React.useEffect(() => {
-    const sectionIds = ["Home", "About", "Projects", "Contact"];
-    const elements = sectionIds
+    const ids = ["About", "Projects", "Contact"];
+    const sections = ids
       .map((id) => document.getElementById(id))
       .filter(Boolean) as HTMLElement[];
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Keep current section highlighted until it drops below 60% visibility
-        const currentEntry = entries.find(
-          (e) => e.target.id === activeSection
-        );
+    const navOffset = 80; // approximate fixed navbar height
+    const updateActive = () => {
+      const scrollPos = window.scrollY + navOffset + 1;
+      const aboutEl = document.getElementById("About");
+      if (aboutEl && scrollPos < aboutEl.offsetTop) {
+        // On Home area: no nav item highlighted
+        setActiveSection("None");
+        return;
+      }
 
-        if (currentEntry && currentEntry.isIntersecting && currentEntry.intersectionRatio >= 0.6) {
-          return; // stay on current section
-        }
+      let current = ids[0];
+      for (const el of sections) {
+        const top = el.offsetTop;
+        if (scrollPos >= top) current = el.id;
+      }
+      setActiveSection(current);
+    };
 
-        // Otherwise pick the section with highest visibility
-        const candidate = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (candidate?.target?.id) {
-          setActiveSection(candidate.target.id);
-        }
-      },
-      { root: null, rootMargin: "0px", threshold: [0.1, 0.25, 0.5, 0.75, 0.9] }
-    );
-
-    elements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    updateActive();
+    window.addEventListener("scroll", updateActive, { passive: true });
+    window.addEventListener("resize", updateActive);
+    return () => {
+      window.removeEventListener("scroll", updateActive);
+      window.removeEventListener("resize", updateActive);
+    };
   }, []);
 
   // Re-trigger animations when Home or Contact re-enter viewport
@@ -102,25 +230,15 @@ export default function Home() {
                          border border-white/20
                          bg-black/20 backdrop-blur-md"
             >
-              <li>
-                <a
-                  href="#Home"
-                  className={
-                    activeSection === "Home"
-                      ? "text-white"
-                      : "hover:text-purple-400 text-white/70"
-                  }
-                >
-                  Home
-                </a>
-              </li>
+              {/* Home removed from navbar by request */}
               <li>
                 <a
                   href="#About"
                   className={
                     activeSection === "About"
-                      ? "text-white"
-                      : "hover:text-purple-400 text-white/70"
+                      ? "text-pink-400 font-semibold"
+                
+                      : "text-white/70 hover:text-pink-400"
                   }
                 >
                   About
@@ -131,8 +249,8 @@ export default function Home() {
                   href="#Projects"
                   className={
                     activeSection === "Projects"
-                      ? "text-white"
-                      : "hover:text-purple-400 text-white/70"
+                      ? "text-pink-400 font-semibold"
+                      : "text-white/70 hover:text-pink-400"
                   }
                 >
                   Projects
@@ -143,8 +261,8 @@ export default function Home() {
                   href="#Contact"
                   className={
                     activeSection === "Contact"
-                      ? "text-white"
-                      : "hover:text-purple-400 text-white/70"
+                      ? "text-pink-400 font-semibold"
+                      : "text-white/70 hover:text-pink-400"
                   }
                 >
                   Contact
@@ -193,6 +311,7 @@ export default function Home() {
                                px-5 py-2 rounded-full text-sm font-medium
                                hover:opacity-90 transition"
                   >
+                    <IoMdDownload className="inline-block mr-2 text-lg align-[-0.15em]" />
                     Download CV
                   </a>
 
@@ -243,13 +362,13 @@ export default function Home() {
           className="min-h-screen py-32 scroll-mt-20
                      bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25]"
         >
-          <div className="max-w-7xl mx-auto px-10">
+          <div className="w-full px-10">
             <h2
               className="text-6xl py-2 font-bold text-center
                          bg-linear-to-b from-[#7717ae] via-[#b64dea] to-[#c596d8]
                          bg-clip-text text-transparent"
             >
-              About Me
+              README: Me
             </h2>
 
             <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-16">
@@ -279,57 +398,34 @@ export default function Home() {
               </motion.div>
 
               <motion.div
-                className="text-gray-300 space-y-8"
+                className="text-gray-300 space-y-8 max-w-3xl mx-auto"
                 initial={{ opacity: 0, x: 60 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: false, amount: 0.3 }}
                 transition={{ type: "spring", stiffness: 120, damping: 18 }}
               >
-                <p className="text-lg leading-relaxed">
-                  I’m a Software Engineering undergraduate atSLIIT
+                <p className={`${patrickHand.className} text-xl md:text-2xl leading-relaxed`}>
+                  I’m a Software Engineering undergraduate at SLIIT
                   with a strong passion for full-stack web development. I enjoy building modern,
                   responsive, and user-friendly applications that balance performance with design.
                 </p>
 
-                <p className="text-lg leading-relaxed">
+                <p className={`${patrickHand.className} text-xl md:text-2xl leading-relaxed`}>
                   My journey began during my university years, where curiosity quickly turned into
                   passion. I enjoy learning new technologies, experimenting with features, and
                   improving my skills through hands-on projects.
                 </p>
 
-                <p className="text-lg leading-relaxed">
+                <p className={`${patrickHand.className} text-xl md:text-2xl leading-relaxed`}>
                   Driven by continuous learning, my goal is to contribute to meaningful projects
                   and grow into a developer who creates impactful digital solutions.
                 </p>
+        </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-5 shadow-lg max-w-md mx-auto">
-                    <h3 className="text-purple-800 font-semibold mb-4 text-xl">Skills</h3>
-                    <div className="flex flex-wrap gap-3 mb-5">
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">CSS</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">PHP</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">C++</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">C</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">MySQL</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">MongoDB</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">React</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Node.js</span>
-                    </div>
-                  </div>
-
-                  <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-5 shadow-lg max-w-md mx-auto">
-                    <h3 className="text-purple-800 font-semibold mb-3 text-xl">Hobbies</h3>
-                    <div className="flex flex-wrap gap-3">
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Athletics</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Dancing</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Reading</span>
-                      <span className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Traveling</span>
-                    </div>
-                  </div>
-                </div>
-
-              </motion.div>
+            </div>
+            {/* Part 2: Full-width cards below the image+paragraph grid */}
+            <div className="mt-16 w-full px-50">
+              <BoxesScroller />
             </div>
           </div>
         </section>
@@ -351,120 +447,156 @@ export default function Home() {
 
             <br /><br /><br />
 
-            <div className="grid grid-cols-1 gap-6 max-w-7xl mx-auto px-10">
+            <div className="relative max-w-5xl mx-auto px-10">
+              {/* Each project lives in a tall wrapper; the card inside is sticky and pins as you scroll */}
 
               {/* Zenny */}
-              <div className="w-full p-6 border border-white/20 rounded-lg">
-                <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Zenny - A Zen Meditation App</p>
-                <br />
-                <Image src={zenny} alt="Zenny Project" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
-                <br />
-                <p className="text-center text-gray-300">
-                  Zenny is a user-friendly Android application developed using Kotlin and Android Studio,
-                  with Room Database for efficient local data management.
-                </p>
-                <br />
-                <ul className="flex items-center justify-center gap-5 text-gray-300">
-                  <li>
-                    <a
-                      href="https://github.com/Theekshana-Jayalath/ZennyRoomDB"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
-                    >
-                      <FaGithub className="text-4xl" />
-                    </a>
-                  </li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Android Studio</li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Kotlin</li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Room Database</li>
-                </ul>
+              <div className="relative h-[140vh]">
+                <motion.div
+                  className="sticky top-28 w-full p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg"
+                  initial={{ y: 20, opacity: 0.95, scale: 0.98 }}
+                  whileInView={{ y: 0, opacity: 1, scale: 1 }}
+                  viewport={{ amount: 0.6, once: false }}
+                  transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                  style={{ zIndex: 13 }}
+                >
+                  <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Zenny - A Zen Meditation App</p>
+                  <br />
+                  <Image src={zenny} alt="Zenny Project" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
+                  <br />
+                  <p className="text-center text-gray-300">
+                    Zenny is a user-friendly Android application developed using Kotlin and Android Studio,
+                    with Room Database for efficient local data management.
+                  </p>
+                  <br />
+                  <ul className="flex items-center justify-center gap-5 text-gray-300">
+                    <li>
+                      <a
+                        href="https://github.com/Theekshana-Jayalath/ZennyRoomDB"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                      >
+                        <FaGithub className="text-4xl" />
+                      </a>
+                    </li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Android Studio</li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Kotlin</li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Room Database</li>
+                  </ul>
+                </motion.div>
               </div>
 
               {/* Fabric Flow */}
-              <div className="w-full p-6 border border-white/20 rounded-lg">
-                <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Fabric Flow</p>
-                <br />
-                <Image src={FF} alt="Fabric Flow" width={950} height={650} className="relative mx-auto w-full max-w-2xl bg-linear-to-b" />
-                <br />
-                <p className="text-center text-gray-300">
-                  Fabric Flow is a MERN stack web application developed using MongoDB, Express.js,
-                  React, and Node.js, designed to manage and streamline fabric and apparel-related workflows efficiently.
-                </p>
-                <br />
-                <ul className="flex items-center justify-center gap-5 text-gray-300">
-                  <li>
-                    <a
-                      href="https://github.com/Theekshana-Jayalath/FabricFlow-frontend"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
-                    >
-                      <FaGithub className="text-4xl" />
-                    </a>
-                  </li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">React</li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Node.js</li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">MongoDB</li>
-                </ul>
+              <div className="relative h-[140vh]">
+                <motion.div
+                  className="sticky top-28 w-full p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg"
+                  initial={{ y: 20, opacity: 0.95, scale: 0.98 }}
+                  whileInView={{ y: 0, opacity: 1, scale: 1 }}
+                  viewport={{ amount: 0.6, once: false }}
+                  transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                  style={{ zIndex: 14 }}
+                >
+                  <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Fabric Flow</p>
+                  <br />
+                  <Image src={FF} alt="Fabric Flow" width={950} height={650} className="relative mx-auto w-full max-w-2xl bg-linear-to-b" />
+                  <br />
+                  <p className="text-center text-gray-300">
+                    Fabric Flow is a MERN stack web application developed using MongoDB, Express.js,
+                    React, and Node.js, designed to manage and streamline fabric and apparel-related workflows efficiently.
+                  </p>
+                  <br />
+                  <ul className="flex items-center justify-center gap-5 text-gray-300">
+                    <li>
+                      <a
+                        href="https://github.com/Theekshana-Jayalath/FabricFlow-frontend"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                      >
+                        <FaGithub className="text-4xl" />
+                      </a>
+                    </li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">React</li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Node.js</li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">MongoDB</li>
+                  </ul>
+                </motion.div>
               </div>
 
               {/* GlitchZone */}
-              <div className="w-full p-6 border border-white/20 rounded-lg">
-                <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">GlitchZone Gaming</p>
-                <br />
-                <Image src={zenny} alt="GlitchZone Gaming" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
-                <br />
-                <p className="text-center text-gray-300">
-                  GlitchZone-Gaming is a web-based gaming platform developed using JavaScript,
-                  featuring an interactive and user-friendly interface for browsing and exploring games.
-                </p>
-                <br />
-                <ul className="flex items-center justify-center gap-5 text-gray-300">
-                  <li>
-                    <a
-                      href="https://github.com/Theekshana-Jayalath/GlitchZone-Gaming"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
-                    >
-                      <FaGithub className="text-4xl" />
-                    </a>
-                  </li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">CSS</li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">JavaScript</li>
-                </ul>
+              <div className="relative h-[140vh]">
+                <motion.div
+                  className="sticky top-28 w-full p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg"
+                  initial={{ y: 20, opacity: 0.95, scale: 0.98 }}
+                  whileInView={{ y: 0, opacity: 1, scale: 1 }}
+                  viewport={{ amount: 0.6, once: false }}
+                  transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                  style={{ zIndex: 15 }}
+                >
+                  <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">GlitchZone Gaming</p>
+                  <br />
+                  <Image src={GG} alt="GlitchZone Gaming" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
+                  <br />
+                  <p className="text-center text-gray-300">
+                    GlitchZone-Gaming is a web-based gaming platform developed using JavaScript,
+                    featuring an interactive and user-friendly interface for browsing and exploring games.
+                  </p>
+                  <br />
+                  <ul className="flex items-center justify-center gap-5 text-gray-300">
+                    <li>
+                      <a
+                        href="https://github.com/Theekshana-Jayalath/GlitchZone-Gaming"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                      >
+                        <FaGithub className="text-4xl" />
+                      </a>
+                    </li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">CSS</li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">JavaScript</li>
+                  </ul>
+                </motion.div>
               </div>
 
               {/* Vax Portal */}
-              <div className="w-full p-6 border border-white/20 rounded-lg">
-                <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Vax-Portal</p>
-                <br />
-                <Image src={zenny} alt="About Me" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
-                <br />
-                <p className="text-center text-gray-300">
-                  Vax Portal is a web-based application developed using HTML, CSS, and PHP,
-                  designed to manage vaccine registrations and related information efficiently.
-                </p>
-                <br />
-                <ul className="flex items-center justify-center gap-5 text-gray-300">
-                  <li>
-                    <a
-                      href="https://github.com/Theekshana-Jayalath/E-Commerce-Website"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
-                    >
-                      <FaGithub className="text-4xl" />
-                    </a>
-                  </li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">CSS</li>
-                  <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">PHP</li>
-                </ul>
+              <div className="relative h-[140vh]">
+                <motion.div
+                  className="sticky top-28 w-full p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg"
+                  initial={{ y: 20, opacity: 0.95, scale: 0.98 }}
+                  whileInView={{ y: 0, opacity: 1, scale: 1 }}
+                  viewport={{ amount: 0.6, once: false }}
+                  transition={{ type: "spring", stiffness: 120, damping: 20 }}
+                  style={{ zIndex: 16 }}
+                >
+                  <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Vax-Portal</p>
+                  <br />
+                  <Image src={VP} alt="About Me" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
+                  <br />
+                  <p className="text-center text-gray-300">
+                    Vax Portal is a web-based application developed using HTML, CSS, and PHP,
+                    designed to manage vaccine registrations and related information efficiently.
+                  </p>
+                  <br />
+                  <ul className="flex items-center justify-center gap-5 text-gray-300">
+                    <li>
+                      <a
+                        href="https://github.com/Theekshana-Jayalath/E-Commerce-Website"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                      >
+                        <FaGithub className="text-4xl" />
+                      </a>
+                    </li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">CSS</li>
+                    <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">PHP</li>
+                  </ul>
+                </motion.div>
               </div>
-
             </div>
           </div>
         </section>
@@ -478,7 +610,7 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center gap-10 mt-12">
 
               <div className="w-full max-w-2xl text-center mx-auto">
-                <p className="text-4xl mb-4" key={contactAnimKey}>
+                <p className="text-5xl mb-4" key={contactAnimKey}>
                   <Typewriter
                     parts={[
                       {
@@ -553,17 +685,42 @@ export default function Home() {
                       <FaGithub className="text-3xl" />
                     </a>
                   </li>
+                  <li>
+                    <a
+                      href="https://www.facebook.com/share/17m1auNH9d/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaFacebook className="text-3xl" />
+                    </a>
+                  </li>
                 </ul>
               </div>
 
               {/* Form removed by request */}
 
             </div>
+
         </section>
 
         <footer className="border-t border-white/10 py-6 text-center text-gray-400 text-sm">
           © 2025 Theekshana Jayalath. All rights reserved.
         </footer>
+
+        {/* Go to Top button (visible from About and below) */}
+  {activeSection !== "None" && (
+          <button
+            aria-label="Go to Top"
+            onClick={() => {
+              const el = document.getElementById("Home");
+              if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+            }}
+            className="fixed bottom-6 right-6 z-50 rounded-full p-3 shadow-lg border border-white/20 bg-linear-to-r from-[#260c35] via-[#3a1a4b] to-[#4b2160] text-white hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+          >
+            <GoMoveToTop className="text-xl" />
+          </button>
+        )}
 
       </main>
     </div>
