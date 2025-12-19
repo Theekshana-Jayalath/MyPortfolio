@@ -542,7 +542,7 @@ export default function Home() {
                 {/* Zenny */}
                 <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-lg text-white">Zenny - A Zen Meditation App</p>
+                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Zenny - A Zen Meditation App</p>
                     <a
                       href="https://github.com/Theekshana-Jayalath/ZennyRoomDB"
                       target="_blank"
@@ -563,7 +563,7 @@ export default function Home() {
                 {/* Fabric Flow */}
                 <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-lg text-white">Fabric Flow</p>
+                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Fabric Flow</p>
                     <a
                       href="https://github.com/Theekshana-Jayalath/FabricFlow-frontend"
                       target="_blank"
@@ -584,7 +584,7 @@ export default function Home() {
                 {/* GlitchZone */}
                 <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-lg text-white">GlitchZone Gaming</p>
+                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">GlitchZone Gaming</p>
                     <a
                       href="https://github.com/Theekshana-Jayalath/GlitchZone-Gaming"
                       target="_blank"
@@ -605,7 +605,7 @@ export default function Home() {
                 {/* Vax Portal */}
                 <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-lg text-white">Vax-Portal</p>
+                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Vax-Portal</p>
                     <a
                       href="https://github.com/Theekshana-Jayalath/E-Commerce-Website"
                       target="_blank"
