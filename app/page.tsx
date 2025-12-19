@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import profileImage from "../public/assests/AM.png";
 import zenny from "../public/assests/p1.png";
 import profileImage1 from "../public/assests/my1..png";
+import FF from "../public/assests/FF.jpeg";
 
 import { IoIosMoon } from "react-icons/io";
 import { FaGithub } from "react-icons/fa";
@@ -16,6 +17,66 @@ import StatusDot from "../components/StatusDot";
 import Typewriter from "../components/Typewriter";
 
 export default function Home() {
+  const [activeSection, setActiveSection] = React.useState<string>("Home");
+  const [homeAnimKey, setHomeAnimKey] = React.useState<number>(0);
+  const [contactAnimKey, setContactAnimKey] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    const sectionIds = ["Home", "About", "Projects", "Contact"];
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Keep current section highlighted until it drops below 60% visibility
+        const currentEntry = entries.find(
+          (e) => e.target.id === activeSection
+        );
+
+        if (currentEntry && currentEntry.isIntersecting && currentEntry.intersectionRatio >= 0.6) {
+          return; // stay on current section
+        }
+
+        // Otherwise pick the section with highest visibility
+        const candidate = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (candidate?.target?.id) {
+          setActiveSection(candidate.target.id);
+        }
+      },
+      { root: null, rootMargin: "0px", threshold: [0.1, 0.25, 0.5, 0.75, 0.9] }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  // Re-trigger animations when Home or Contact re-enter viewport
+  React.useEffect(() => {
+    const targets = ["Home", "Contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (targets.length === 0) return;
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            if (e.target.id === "Home") setHomeAnimKey((k) => k + 1);
+            if (e.target.id === "Contact") setContactAnimKey((k) => k + 1);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    targets.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
   return (
     <div>
       <Head>
@@ -41,10 +102,54 @@ export default function Home() {
                          border border-white/20
                          bg-black/20 backdrop-blur-md"
             >
-              <li><a href="#Home" className="hover:text-purple-400">Home</a></li>
-              <li><a href="#About" className="hover:text-purple-400">About</a></li>
-              <li><a href="#Projects" className="hover:text-purple-400">Projects</a></li>
-              <li><a href="#Contact" className="hover:text-purple-400">Contact</a></li>
+              <li>
+                <a
+                  href="#Home"
+                  className={
+                    activeSection === "Home"
+                      ? "text-white"
+                      : "hover:text-purple-400 text-white/70"
+                  }
+                >
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#About"
+                  className={
+                    activeSection === "About"
+                      ? "text-white"
+                      : "hover:text-purple-400 text-white/70"
+                  }
+                >
+                  About
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#Projects"
+                  className={
+                    activeSection === "Projects"
+                      ? "text-white"
+                      : "hover:text-purple-400 text-white/70"
+                  }
+                >
+                  Projects
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#Contact"
+                  className={
+                    activeSection === "Contact"
+                      ? "text-white"
+                      : "hover:text-purple-400 text-white/70"
+                  }
+                >
+                  Contact
+                </a>
+              </li>
             </ul>
           </nav>
 
@@ -53,7 +158,7 @@ export default function Home() {
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5">
               {/* LEFT – Text */}
               <div className="space-y-5 text-center order-2 md:order-1 mt-2 md:mt-8">
-                <h1 className="text-7xl md:text-6xl font-bold">
+                <h1 className="text-7xl md:text-6xl font-bold" key={homeAnimKey}>
           <Typewriter
                     parts={[
                       { text: "Hi, I’m " },
@@ -64,10 +169,10 @@ export default function Home() {
                   />
                 </h1>
 
-        <h2 className="text-3xl">
+  <h2 className="text-3xl" key={`sub-${homeAnimKey}`}>
                   <Typewriter
                     parts={[
-          { text: "Software Engineer", className: "bg-linear-to-r from-purple-800 via-fuchsia-800 to-pink-700 bg-clip-text text-transparent" },
+          { text: "Full-Stack Developer", className: "bg-linear-to-r from-purple-800 via-fuchsia-800 to-pink-700 bg-clip-text text-transparent" },
                     ]}
                     speedMs={55}
                     delayMs={55 * ("Hi, I’m Theekshana".length)}
@@ -105,7 +210,7 @@ export default function Home() {
 
               {/* RIGHT – Image*/}
               <div className="order-1 md:order-2 flex flex-col items-center gap-4">
-                <motion.div
+                <motion.div key={`img-${homeAnimKey}`}
                   className="relative flex justify-center"
                   initial={{ opacity: 0, scale: 0.9, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -261,8 +366,13 @@ export default function Home() {
                 <br />
                 <ul className="flex items-center justify-center gap-5 text-gray-300">
                   <li>
-                    <a href="https://github.com/Theekshana-Jayalath/ZennyRoomDB" target="_blank" rel="noopener noreferrer">
-                      <FaGithub className="text-4xl cursor-pointer" />
+                    <a
+                      href="https://github.com/Theekshana-Jayalath/ZennyRoomDB"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-4xl" />
                     </a>
                   </li>
                   <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">Android Studio</li>
@@ -275,7 +385,7 @@ export default function Home() {
               <div className="w-full p-6 border border-white/20 rounded-lg">
                 <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Fabric Flow</p>
                 <br />
-                <Image src={zenny} alt="About Me" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
+                <Image src={FF} alt="Fabric Flow" width={950} height={650} className="relative mx-auto w-full max-w-2xl bg-linear-to-b" />
                 <br />
                 <p className="text-center text-gray-300">
                   Fabric Flow is a MERN stack web application developed using MongoDB, Express.js,
@@ -284,8 +394,13 @@ export default function Home() {
                 <br />
                 <ul className="flex items-center justify-center gap-5 text-gray-300">
                   <li>
-                    <a href="https://github.com/Theekshana-Jayalath/FabricFlow-frontend" target="_blank" rel="noopener noreferrer">
-                      <FaGithub className="text-4xl cursor-pointer" />
+                    <a
+                      href="https://github.com/Theekshana-Jayalath/FabricFlow-frontend"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-4xl" />
                     </a>
                   </li>
                   <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">React</li>
@@ -298,7 +413,7 @@ export default function Home() {
               <div className="w-full p-6 border border-white/20 rounded-lg">
                 <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">GlitchZone Gaming</p>
                 <br />
-                <Image src={zenny} alt="About Me" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
+                <Image src={zenny} alt="GlitchZone Gaming" width={400} height={400} className="relative mx-auto w-full max-w-md bg-linear-to-b" />
                 <br />
                 <p className="text-center text-gray-300">
                   GlitchZone-Gaming is a web-based gaming platform developed using JavaScript,
@@ -307,8 +422,13 @@ export default function Home() {
                 <br />
                 <ul className="flex items-center justify-center gap-5 text-gray-300">
                   <li>
-                    <a href="https://github.com/Theekshana-Jayalath/GlitchZone-Gaming" target="_blank" rel="noopener noreferrer">
-                      <FaGithub className="text-4xl cursor-pointer" />
+                    <a
+                      href="https://github.com/Theekshana-Jayalath/GlitchZone-Gaming"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-4xl" />
                     </a>
                   </li>
                   <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</li>
@@ -330,8 +450,13 @@ export default function Home() {
                 <br />
                 <ul className="flex items-center justify-center gap-5 text-gray-300">
                   <li>
-                    <a href="https://github.com/Theekshana-Jayalath/E-Commerce-Website" target="_blank" rel="noopener noreferrer">
-                      <FaGithub className="text-4xl cursor-pointer" />
+                    <a
+                      href="https://github.com/Theekshana-Jayalath/E-Commerce-Website"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-4xl" />
                     </a>
                   </li>
                   <li className="inline-block border border-white/20 rounded-lg px-4 py-2 bg-transparent">HTML</li>
@@ -350,19 +475,22 @@ export default function Home() {
           className="min-h-screen py-32 scroll-mt-20
                      bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25]"
         >
-          <div className="max-w-7xl mx-auto py-5 px-5">
-            <h2
-              className="text-6xl py-2 font-bold text-center
-                         bg-linear-to-b from-[#7717ae] via-[#b64dea] to-[#c596d8]
-                         bg-clip-text text-transparent"
-            >
-              Contact Me
-            </h2>
+            <div className="flex flex-col items-center justify-center gap-10 mt-12">
 
-            <div className="flex flex-col md:flex-row items-center justify-center gap-8 mt-8">
-
-              <div className="flex-1 text-center md:text-left">
-                <p className="text-4xl text-white mb-4">Let's connect!</p>
+              <div className="w-full max-w-2xl text-center mx-auto">
+                <p className="text-4xl mb-4" key={contactAnimKey}>
+                  <Typewriter
+                    parts={[
+                      {
+                        text: "Let's connect!",
+                        className:
+                          "bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent",
+                      },
+                    ]}
+                    speedMs={55}
+                    cursor={false}
+                  />
+                </p>
                 <p className="text-gray-300">
                   Got an idea, a project in mind, or just want to connect?<br />
                   I’m always excited to explore new opportunities and creative conversations.<br />
@@ -370,51 +498,67 @@ export default function Home() {
                 </p>
 
                 <br />
-                <p>Email</p>
+                <p className=" text-xl text-purple-300">Email</p>
                 <p className="text-gray-300">
-                  <a href="mailto:theekshanapabodi2001@gmail.com">theekshanapabodi2001@gmail.com</a>
+                  <a
+                    href="mailto:theekshanapabodi2001@gmail.com"
+                    className="text-white hover:text-blue-400 hover:underline focus:text-white focus:no-underline focus:outline-none focus-visible:text-blue-400 focus-visible:underline"
+                  >
+                    theekshanapabodi2001@gmail.com
+                  </a>
                 </p>
 
                 <br />
-                <p>Phone</p>
+                <p className=" text-xl text-purple-300">Phone</p>
                 <p className="text-gray-300">
-                  <a href="tel:+94765738311">+94 76 573 8311</a>
+                  <a
+                    href="tel:+94765738311"
+                    className="text-white hover:text-blue-400 hover:underline focus:text-white focus:no-underline focus:outline-none focus-visible:text-blue-400 focus-visible:underline"
+                  >
+                    +94 76 573 8311
+                  </a>
                 </p>
 
                 <br />
-                <p className="text-gray-300">You can also find me on:</p>
+                <p className="text-gray-300 text-xl">You can also find me on:</p>
 
-                <ul className="flex items-center gap-5 justify-center md:justify-start mt-4">
-                  <li><FaInstagram className="text-4xl cursor-pointer" /></li>
-                  <li><FaLinkedin className="text-4xl cursor-pointer" /></li>
-                  <li><FaGithub className="text-4xl cursor-pointer" /></li>
+                <ul className="flex items-center justify-center gap-5 mt-4">
+                  <li>
+                    <a
+                      href="https://www.instagram.com/_t_k__g_i_r_l_?igsh=MTRzcnJqZWd2ejh4bw=="
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaInstagram className="text-3xl" />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://www.linkedin.com/in/theekshana-jayalath/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaLinkedin className="text-3xl" />
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/Theekshana-Jayalath"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group inline-flex items-center justify-center rounded-full p-2 text-white/70 hover:text-purple-400 focus-visible:text-purple-400 active:text-purple-400 transition transform hover:scale-110 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-3xl" />
+                    </a>
+                  </li>
                 </ul>
               </div>
 
-              <div className="flex-1 w-full max-w-md border border-white/20 rounded-lg p-6 bg-transparent">
-                <p className="text-white text-lg mb-4">Get In Touch</p>
-
-                <form
-                  action="https://formspree.io/f/mayvlrze"
-                  method="POST"
-                  className="flex flex-col gap-4"
-                >
-                  <input type="text" name="name" placeholder="Your Name" className="p-2 rounded-md border border-white/20 bg-transparent text-white" />
-                  <input type="email" name="email" placeholder="Your Email" className="p-2 rounded-md border border-white/20 bg-transparent text-white" />
-                  <textarea name="message" placeholder="Your Message" rows={5} className="p-2 rounded-md border border-white/20 bg-transparent text-white" />
-
-                  <button
-                    type="submit"
-                    className="bg-linear-to-r from-[#260c35] via-[#3a1a4b] to-[#4b2160]
-                               text-white px-4 py-2 rounded-md w-32 mx-auto"
-                  >
-                    Send
-                  </button>
-                </form>
-              </div>
+              {/* Form removed by request */}
 
             </div>
-          </div>
         </section>
 
         <footer className="border-t border-white/10 py-6 text-center text-gray-400 text-sm">
