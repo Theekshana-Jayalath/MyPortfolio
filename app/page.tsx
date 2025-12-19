@@ -17,6 +17,8 @@ import { FaInstagram } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { IoMdDownload } from "react-icons/io";
 import { GoMoveToTop } from "react-icons/go";
+import { FiMenu } from "react-icons/fi";
+import { IoClose } from "react-icons/io5";
 import StatusDot from "../components/StatusDot";
 import Typewriter from "../components/Typewriter";
 import { Patrick_Hand } from "next/font/google";
@@ -28,6 +30,11 @@ function BoxesScroller() {
   const trackRef = React.useRef<HTMLDivElement | null>(null);
   const [cardWidth, setCardWidth] = React.useState(0);
   const [distance, setDistance] = React.useState(0);
+  type CSSVars = React.CSSProperties & { ['--distance']?: string; ['--duration']?: string };
+  const marqueeVars: CSSVars = {
+    '--distance': `${distance}px`,
+    '--duration': '25s',
+  };
 
   // Measure approximate card width based on container halves with gap
   React.useEffect(() => {
@@ -35,9 +42,12 @@ function BoxesScroller() {
       const container = trackRef.current?.parentElement as HTMLElement | null;
       if (!container) return;
       const rect = container.getBoundingClientRect();
-      const gap = 48; // px total horizontal gap
-      const half = (rect.width - gap) / 2;
-      setCardWidth(half * 0.85);
+      const isSmall = window.innerWidth < 640; // sm breakpoint
+      const cardsPerView = isSmall ? 1 : 2;
+      const gapPx = 24; // Tailwind gap-6
+      const totalGaps = gapPx * (cardsPerView - 1);
+      const width = (rect.width - totalGaps) / cardsPerView;
+      setCardWidth(width);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -71,11 +81,11 @@ function BoxesScroller() {
 
   return (
     <div className="relative w-full py-2">
-      <div className="overflow-hidden w-full px-12 md:px-24">
+      <div className="overflow-hidden w-full px-4 sm:px-8 md:px-24">
         <div
           ref={trackRef}
           className="boxes-track flex items-stretch gap-6"
-          style={{ ['--distance' as any]: `${distance}px`, ['--duration' as any]: '25s' }}
+          style={marqueeVars}
         >
           {/* Original 4 cards */}
           <Card title="Skills">
@@ -148,6 +158,7 @@ export default function Home() {
   const [activeSection, setActiveSection] = React.useState<string>("None");
   const [homeAnimKey, setHomeAnimKey] = React.useState<number>(0);
   const [contactAnimKey, setContactAnimKey] = React.useState<number>(0);
+  const [mobileNavOpen, setMobileNavOpen] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     const ids = ["About", "Projects", "Contact"];
@@ -222,8 +233,18 @@ export default function Home() {
                      bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25]
                      text-white"
         >
-          {/* Navigation */}
-          <nav className="fixed top-0 left-1/2 -translate-x-1/2 z-50 py-5">
+          {/* Mobile hamburger (phones only) */}
+          <button
+            type="button"
+            aria-label="Open navigation"
+            onClick={() => setMobileNavOpen(true)}
+            className="fixed top-4 left-4 md:hidden z-50 rounded-lg border border-white/20 bg-black/30 backdrop-blur-md p-2 text-white/80"
+          >
+            <FiMenu className="text-2xl" />
+          </button>
+
+          {/* Desktop Navigation */}
+          <nav className="fixed top-0 left-1/2 -translate-x-1/2 z-40 py-5 hidden md:block">
             <ul
               className="flex items-center gap-10 text-sm md:text-base
                          px-6 py-2 rounded-full
@@ -271,16 +292,85 @@ export default function Home() {
             </ul>
           </nav>
 
+          {/* Mobile Drawer */}
+          {mobileNavOpen && (
+            <div className="fixed inset-0 z-50 md:hidden">
+              <div
+                className="absolute inset-0 bg-black/50"
+                onClick={() => setMobileNavOpen(false)}
+              />
+              <motion.aside
+                className="absolute top-0 left-0 h-full w-72 max-w-[80%] bg-[#0b1020]/95 backdrop-blur-md border-r border-white/10 p-6 text-white"
+                initial={{ x: -320, opacity: 1 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 24 }}
+              >
+                <div className="flex items-center justify-between mb-6">
+                  <span className="text-lg font-semibold">Menu</span>
+                  <button
+                    type="button"
+                    aria-label="Close navigation"
+                    onClick={() => setMobileNavOpen(false)}
+                    className="rounded-md p-2 border border-white/10 hover:bg-white/5"
+                  >
+                    <IoClose className="text-2xl" />
+                  </button>
+                </div>
+                <ul className="flex flex-col gap-4">
+                  <li>
+                    <a
+                      href="#About"
+                      onClick={() => setMobileNavOpen(false)}
+                      className={
+                        activeSection === "About"
+                          ? "text-pink-400 font-semibold"
+                          : "text-white/90 hover:text-pink-400"
+                      }
+                    >
+                      About
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#Projects"
+                      onClick={() => setMobileNavOpen(false)}
+                      className={
+                        activeSection === "Projects"
+                          ? "text-pink-400 font-semibold"
+                          : "text-white/90 hover:text-pink-400"
+                      }
+                    >
+                      Projects
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#Contact"
+                      onClick={() => setMobileNavOpen(false)}
+                      className={
+                        activeSection === "Contact"
+                          ? "text-pink-400 font-semibold"
+                          : "text-white/90 hover:text-pink-400"
+                      }
+                    >
+                      Contact
+                    </a>
+                  </li>
+                </ul>
+              </motion.aside>
+            </div>
+          )}
+
           {/* Hero Content */}
           <div className="container mx-auto px-2 min-h-[calc(100vh-5rem)] flex items-center justify-center">
             <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-5">
               {/* LEFT – Text */}
               <div className="space-y-5 text-center order-2 md:order-1 mt-2 md:mt-8">
-                <h1 className="text-7xl md:text-6xl font-bold" key={homeAnimKey}>
+        <h1 className="text-7xl md:text-6xl font-bold" key={homeAnimKey}>
           <Typewriter
                     parts={[
                       { text: "Hi, I’m " },
-            { text: "Theekshana", className: "bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent" },
+      { text: "Theekshana", className: "bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent text-5xl sm:text-6xl md:text-6xl lg:text-7xl" },
                     ]}
                     speedMs={55}
                     cursor={false}
@@ -362,7 +452,7 @@ export default function Home() {
           className="min-h-screen py-32 scroll-mt-20
                      bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25]"
         >
-          <div className="w-full px-10">
+          <div className="w-full px-4 sm:px-8 md:px-10">
             <h2
               className="text-6xl py-2 font-bold text-center
                          bg-linear-to-b from-[#7717ae] via-[#b64dea] to-[#c596d8]
@@ -424,7 +514,7 @@ export default function Home() {
 
             </div>
             {/* Part 2: Full-width cards below the image+paragraph grid */}
-            <div className="mt-16 w-full px-50">
+            <div className="mt-16 w-full px-0 sm:px-4 md:px-10">
               <BoxesScroller />
             </div>
           </div>
@@ -446,14 +536,103 @@ export default function Home() {
             </h2>
 
             <br /><br /><br />
+            {/* Mobile list (only on phones) */}
+            <div className="md:hidden max-w-5xl mx-auto px-4">
+              <ul className="space-y-4">
+                {/* Zenny */}
+                <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Zenny - A Zen Meditation App</p>
+                    <a
+                      href="https://github.com/Theekshana-Jayalath/ZennyRoomDB"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Open Zenny GitHub"
+                      className="shrink-0 inline-flex items-center justify-center rounded-full p-2 text-white/80 hover:text-purple-400 focus-visible:text-purple-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-2xl" />
+                    </a>
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                    <span className="border border-white/20 rounded-md px-2 py-1">Android Studio</span>
+                    <span className="border border-white/20 rounded-md px-2 py-1">Kotlin</span>
+                    <span className="border border-white/20 rounded-md px-2 py-1">Room DB</span>
+                  </div>
+                </li>
 
-            <div className="relative max-w-5xl mx-auto px-10">
+                {/* Fabric Flow */}
+                <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Fabric Flow</p>
+                    <a
+                      href="https://github.com/Theekshana-Jayalath/FabricFlow-frontend"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Open Fabric Flow GitHub"
+                      className="shrink-0 inline-flex items-center justify-center rounded-full p-2 text-white/80 hover:text-purple-400 focus-visible:text-purple-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-2xl" />
+                    </a>
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                    <span className="border border-white/20 rounded-md px-2 py-1">React</span>
+                    <span className="border border-white/20 rounded-md px-2 py-1">Node.js</span>
+                    <span className="border border-white/20 rounded-md px-2 py-1">MongoDB</span>
+                  </div>
+                </li>
+
+                {/* GlitchZone */}
+                <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">GlitchZone Gaming</p>
+                    <a
+                      href="https://github.com/Theekshana-Jayalath/GlitchZone-Gaming"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Open GlitchZone GitHub"
+                      className="shrink-0 inline-flex items-center justify-center rounded-full p-2 text-white/80 hover:text-purple-400 focus-visible:text-purple-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-2xl" />
+                    </a>
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                    <span className="border border-white/20 rounded-md px-2 py-1">HTML</span>
+                    <span className="border border-white/20 rounded-md px-2 py-1">CSS</span>
+                    <span className="border border-white/20 rounded-md px-2 py-1">JavaScript</span>
+                  </div>
+                </li>
+
+                {/* Vax Portal */}
+                <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
+                  <div className="flex items-start justify-between gap-3">
+                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Vax-Portal</p>
+                    <a
+                      href="https://github.com/Theekshana-Jayalath/E-Commerce-Website"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Open Vax-Portal GitHub"
+                      className="shrink-0 inline-flex items-center justify-center rounded-full p-2 text-white/80 hover:text-purple-400 focus-visible:text-purple-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500/50"
+                    >
+                      <FaGithub className="text-2xl" />
+                    </a>
+                  </div>
+                  <div className="mt-2 flex flex-wrap gap-2 text-xs">
+                    <span className="border border-white/20 rounded-md px-2 py-1">HTML</span>
+                    <span className="border border-white/20 rounded-md px-2 py-1">CSS</span>
+                    <span className="border border-white/20 rounded-md px-2 py-1">PHP</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* Desktop/Tablet stacked sticky (hidden on phones) */}
+            <div className="relative max-w-5xl mx-auto px-4 sm:px-6 md:px-10 hidden md:block" aria-hidden>
               {/* Each project lives in a tall wrapper; the card inside is sticky and pins as you scroll */}
 
               {/* Zenny */}
-              <div className="relative h-[140vh]">
+        <div className="relative h-[120vh] sm:h-[130vh] lg:h-[140vh]">
                 <motion.div
-                  className="sticky top-28 w-full p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg"
+          className="sticky top-16 sm:top-24 md:top-28 w-full p-4 sm:p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg transform-gpu"
                   initial={{ y: 20, opacity: 0.95, scale: 0.98 }}
                   whileInView={{ y: 0, opacity: 1, scale: 1 }}
                   viewport={{ amount: 0.6, once: false }}
@@ -488,9 +667,9 @@ export default function Home() {
               </div>
 
               {/* Fabric Flow */}
-              <div className="relative h-[140vh]">
+        <div className="relative h-[120vh] sm:h-[130vh] lg:h-[140vh]">
                 <motion.div
-                  className="sticky top-28 w-full p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg"
+          className="sticky top-16 sm:top-24 md:top-28 w-full p-4 sm:p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg transform-gpu"
                   initial={{ y: 20, opacity: 0.95, scale: 0.98 }}
                   whileInView={{ y: 0, opacity: 1, scale: 1 }}
                   viewport={{ amount: 0.6, once: false }}
@@ -499,7 +678,7 @@ export default function Home() {
                 >
                   <p className="text-center font-bold text-2xl bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Fabric Flow</p>
                   <br />
-                  <Image src={FF} alt="Fabric Flow" width={950} height={650} className="relative mx-auto w-full max-w-2xl bg-linear-to-b" />
+                  <Image src={FF} alt="Fabric Flow" width={950} height={650} className="relative mx-auto w-full max-w-lg md:max-w-2xl bg-linear-to-b" />
                   <br />
                   <p className="text-center text-gray-300">
                     Fabric Flow is a MERN stack web application developed using MongoDB, Express.js,
@@ -525,9 +704,9 @@ export default function Home() {
               </div>
 
               {/* GlitchZone */}
-              <div className="relative h-[140vh]">
+        <div className="relative h-[120vh] sm:h-[130vh] lg:h-[140vh]">
                 <motion.div
-                  className="sticky top-28 w-full p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg"
+          className="sticky top-16 sm:top-24 md:top-28 w-full p-4 sm:p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg transform-gpu"
                   initial={{ y: 20, opacity: 0.95, scale: 0.98 }}
                   whileInView={{ y: 0, opacity: 1, scale: 1 }}
                   viewport={{ amount: 0.6, once: false }}
@@ -562,9 +741,9 @@ export default function Home() {
               </div>
 
               {/* Vax Portal */}
-              <div className="relative h-[140vh]">
+        <div className="relative h-[120vh] sm:h-[130vh] lg:h-[140vh]">
                 <motion.div
-                  className="sticky top-28 w-full p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg"
+          className="sticky top-16 sm:top-24 md:top-28 w-full p-4 sm:p-6 border border-white/20 rounded-lg bg-white/5 backdrop-blur-md shadow-lg transform-gpu"
                   initial={{ y: 20, opacity: 0.95, scale: 0.98 }}
                   whileInView={{ y: 0, opacity: 1, scale: 1 }}
                   viewport={{ amount: 0.6, once: false }}
