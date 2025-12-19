@@ -70,8 +70,8 @@ function BoxesScroller() {
   // Card template
   const Card = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <div className="shrink-0 px-4" style={{ width: `${cardWidth}px` }}>
-      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-lg min-h-64 h-full flex flex-col justify-start">
-        <h3 className="text-purple-800 font-semibold mb-4 text-2xl text-center">{title}</h3>
+      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-lg min-h-64 h-full flex flex-col justify-start text-gray-200">
+        <h3 className="font-semibold mb-4 text-2xl text-center text-white sm:bg-clip-text sm:text-transparent sm:bg-linear-to-r sm:from-purple-400 sm:via-fuchsia-500 sm:to-pink-500">{title}</h3>
         <div className="flex flex-wrap gap-3 justify-center items-center">
           {children}
         </div>
@@ -532,17 +532,17 @@ export default function Home() {
                          bg-linear-to-b from-[#7717ae] via-[#b64dea] to-[#c596d8]
                          bg-clip-text text-transparent"
             >
-              Projects
+              Build Journal
             </h2>
 
             <br /><br /><br />
             {/* Mobile list (only on phones) */}
-            <div className="md:hidden max-w-5xl mx-auto px-4">
+            <div className="md:hidden max-w-5xl mx-auto px-4 text-white">
               <ul className="space-y-4">
                 {/* Zenny */}
                 <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Zenny - A Zen Meditation App</p>
+                    <p className="font-semibold text-lg text-white">Zenny - A Zen Meditation App</p>
                     <a
                       href="https://github.com/Theekshana-Jayalath/ZennyRoomDB"
                       target="_blank"
@@ -563,7 +563,7 @@ export default function Home() {
                 {/* Fabric Flow */}
                 <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Fabric Flow</p>
+                    <p className="font-semibold text-lg text-white">Fabric Flow</p>
                     <a
                       href="https://github.com/Theekshana-Jayalath/FabricFlow-frontend"
                       target="_blank"
@@ -584,7 +584,7 @@ export default function Home() {
                 {/* GlitchZone */}
                 <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">GlitchZone Gaming</p>
+                    <p className="font-semibold text-lg text-white">GlitchZone Gaming</p>
                     <a
                       href="https://github.com/Theekshana-Jayalath/GlitchZone-Gaming"
                       target="_blank"
@@ -605,7 +605,7 @@ export default function Home() {
                 {/* Vax Portal */}
                 <li className="border border-white/20 rounded-lg bg-white/5 backdrop-blur-md p-4">
                   <div className="flex items-start justify-between gap-3">
-                    <p className="font-semibold text-lg bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">Vax-Portal</p>
+                    <p className="font-semibold text-lg text-white">Vax-Portal</p>
                     <a
                       href="https://github.com/Theekshana-Jayalath/E-Commerce-Website"
                       target="_blank"
