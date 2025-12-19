@@ -783,10 +783,10 @@ export default function Home() {
         {/* Contact Section */}
         <section
           id="Contact"
-          className="min-h-screen py-32 scroll-mt-20
+          className="min-h-screen py-16 sm:py-24 md:py-32 scroll-mt-20
                      bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25]"
         >
-            <div className="flex flex-col items-center justify-center gap-10 mt-12">
+            <div className="flex flex-col items-center justify-center gap-10 mt-6 sm:mt-10 md:mt-12">
 
               <div className="w-full max-w-2xl text-center mx-auto">
                 <p className="text-5xl mb-4" key={contactAnimKey}>
