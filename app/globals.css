@@ -1,3 +1,13 @@
+/* Prevent horizontal scrolling on mobile */
+html, body {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Ensure Next.js root doesn't exceed viewport width */
+#__next, :root {
+  width: 100%;
+}
 @import "tailwindcss";
 
 :root {
