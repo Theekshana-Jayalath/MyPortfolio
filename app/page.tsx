@@ -96,7 +96,7 @@ export default function Home() {
   <meta name="description" content="My personal portfolio website" />
       </Head>
 
-  <main className="min-h-screen bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25] px-4 sm:px-6 md:px-10">
+  <main className="min-h-screen overflow-x-hidden bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25] px-4 sm:px-6 md:px-10">
 
         {/* Home Section */}
         <section id="Home"
@@ -307,7 +307,7 @@ export default function Home() {
                     alt="Profile"
                     width={550}
                     height={700}
-                    className="relative z-10 object-cover rounded-xl"
+                    className="relative z-10 object-cover rounded-xl max-w-full h-auto"
                     priority
                   />
                 </motion.div>
@@ -353,7 +353,7 @@ export default function Home() {
                     alt="About Me"
                     width={420}
                     height={420}
-                    className="relative z-10 rounded-full object-cover border border-white/10 mx-auto"
+                    className="relative z-10 rounded-full object-cover border border-white/10 mx-auto max-w-full h-auto"
                   />
                   {/* Left column boxes (visible on md+) */}
                   <div className="mt-6 sm:mt-8 hidden md:grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
