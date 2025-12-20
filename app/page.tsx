@@ -96,7 +96,7 @@ export default function Home() {
   <meta name="description" content="My personal portfolio website" />
       </Head>
 
-  <main className="min-h-screen bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25] px-10">
+  <main className="min-h-screen bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25] px-4 sm:px-6 md:px-10">
 
         {/* Home Section */}
         <section id="Home"
@@ -320,10 +320,10 @@ export default function Home() {
         {/* About Me Section */}
         <section
           id="About"
-          className="min-h-screen py-32 scroll-mt-20
+          className="min-h-screen py-16 sm:py-24 md:py-32 scroll-mt-20
                      bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25]"
         >
-          <div className="w-full px-4 sm:px-8 md:px-10">
+          <div className="w-full px-2 sm:px-6 md:px-10">
             <h2
               className="text-6xl py-2 font-bold text-center
                          bg-linear-to-b from-[#7717ae] via-[#b64dea] to-[#c596d8]
@@ -332,7 +332,7 @@ export default function Home() {
               README: Me
             </h2>
 
-            <div className="mt-20 grid grid-cols-1 lg:grid-cols-2 items-center gap-6">
+            <div className="mt-10 sm:mt-16 grid grid-cols-1 lg:grid-cols-2 items-center gap-4 sm:gap-8 lg:gap-12">
 
               <motion.div
                 className="flex justify-center"
@@ -356,7 +356,7 @@ export default function Home() {
                     className="relative z-10 rounded-full object-cover border border-white/10 mx-auto"
                   />
                   {/* Two transparent boxes (left side), horizontal on md+ */}
-                  <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     <div className="border border-white/15 rounded-2xl bg-white/5 backdrop-blur-md p-5 shadow-sm">
                       <h3 className="font-semibold text-lg bg-clip-text text-transparent text-center bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500">Skills</h3>
                       <div className="mt-3 flex flex-wrap gap-2 text-sm text-white/80">
