@@ -355,8 +355,8 @@ export default function Home() {
                     height={420}
                     className="relative z-10 rounded-full object-cover border border-white/10 mx-auto"
                   />
-                  {/* Two transparent boxes (left side), horizontal on md+ */}
-                  <div className="mt-6 sm:mt-8 grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  {/* Left column boxes (visible on md+) */}
+                  <div className="mt-6 sm:mt-8 hidden md:grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     <div className="border border-white/15 rounded-2xl bg-white/5 backdrop-blur-md p-5 shadow-sm">
                       <h3 className="font-semibold text-lg bg-clip-text text-transparent text-center bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500">Skills</h3>
                       <div className="mt-3 flex flex-wrap gap-2 text-sm text-white/80">
@@ -410,7 +410,8 @@ export default function Home() {
                   and grow into a developer who creates impactful digital solutions.
                 </p>
 
-                <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Right column boxes (visible on md+) */}
+                <div className="mt-8 md:mt-14 hidden md:grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="border border-white/15 rounded-2xl bg-white/5 backdrop-blur-md p-5 shadow-sm">
                       <h3 className="font-semibold text-lg bg-clip-text text-transparent text-center bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500">Education</h3>
                       <div className="mt-3 flex flex-wrap gap-2 text-sm text-white/80">
@@ -428,6 +429,51 @@ export default function Home() {
                   </div>
         </motion.div>
 
+            </div>
+            {/* Mobile-only combined 2×2 boxes below paragraphs */}
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:hidden">
+              {/* Skills */}
+              <div className="border border-white/15 rounded-2xl bg-white/5 backdrop-blur-md p-4 shadow-sm">
+                <h3 className="font-semibold text-base bg-clip-text text-transparent text-center bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500">Skills</h3>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/80">
+                  <span className="border border-white/20 rounded-md px-2 py-1">HTML</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">CSS</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">PHP</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">C++</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">C</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">MySQL</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">MongoDB</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">React</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">Node.js</span>
+                </div>
+              </div>
+
+              {/* Hobbies */}
+              <div className="border border-white/15 rounded-2xl bg-white/5 backdrop-blur-md p-4 shadow-sm">
+                <h3 className="font-semibold text-base bg-clip-text text-transparent text-center bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500">Hobbies</h3>
+                <div className="mt-3 flex flex-wrap gap-2 text-xs text-white/80">
+                  <span className="border border-white/20 rounded-md px-2 py-1">Athletics</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">Dancing</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">Reading</span>
+                  <span className="border border-white/20 rounded-md px-2 py-1">Traveling</span>
+                </div>
+              </div>
+
+              {/* Education */}
+              <div className="border border-white/15 rounded-2xl bg-white/5 backdrop-blur-md p-4 shadow-sm">
+                <h3 className="font-semibold text-base bg-clip-text text-transparent text-center bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500">Education</h3>
+                <div className="mt-3 text-xs text-white/80 space-y-1">
+                  <p>SLIIT - Software Engineering (Undergraduate)</p>
+                </div>
+              </div>
+
+              {/* Experience */}
+              <div className="border border-white/15 rounded-2xl bg-white/5 backdrop-blur-md p-4 shadow-sm">
+                <h3 className="font-semibold text-base bg-clip-text text-transparent text-center bg-linear-to-r from-purple-400 via-fuchsia-500 to-pink-500">Experience</h3>
+                <div className="mt-3 text-xs text-white/80 space-y-1">
+                  <p className="text-center">BOC - Job Skills Development Training Programme (Andaulpotha Branch, 2022)</p>
+                </div>
+              </div>
             </div>
           </div>
         </section>
