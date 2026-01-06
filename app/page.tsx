@@ -496,7 +496,7 @@ export default function Home() {
             <br /><br /><br />
             {/* Unified grid: 2x2 on md+, 1x4 on mobile */}
             <div className="max-w-6xl mx-auto px-4 sm:px-6 md:px-10">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8 text-white">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 text-white">
                 {/* Zenny */}
                 <div className="group border border-white/20 rounded-2xl bg-white/5 backdrop-blur-md p-4 sm:p-6 shadow-lg transition-transform duration-300 ease-out hover:scale-[1.03] hover:shadow-2xl hover:bg-white/10">
                   <div className="flex items-start justify-between gap-3">
