@@ -10,7 +10,7 @@ import zenny from "../public/assests/p1.png";
 import profileImage1 from "../public/assests/my1..png";
 import FF from "../public/assests/FF.jpeg";
 import GG from "../public/assests/GG.png";
-import VP from "../public/assests/VP.png";
+import VP from "../public/assests/vp.png";
 
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
