@@ -266,7 +266,7 @@ export default function Home() {
                 {/* Buttons */}
                 <div className="flex gap-4 pt-4 justify-center">
                   <a
-                    href="https://drive.google.com/uc?export=download&id=1lABeOR9KJG13JWcEpOFtVol4Hcj87S2d"
+                    href="https://drive.google.com/file/d/148EpXV4vjCd0RIVrZkCJrQDJxe76611p/view?usp=sharing"
                     download
                     className="bg-linear-to-r from-[#260c35] via-[#3a1a4b] to-[#4b2160]
                                px-5 py-2 rounded-full text-sm font-medium
