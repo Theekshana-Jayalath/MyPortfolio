@@ -5,12 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 // GSAP removed to avoid dependency issues; using JS-driven slider centering
 
-import profileImage from "../public/assests/AM.png";
-import zenny from "../public/assests/p1.png";
-import profileImage1 from "../public/assests/my1..png";
-import FF from "../public/assests/FF.jpeg";
-import GG from "../public/assests/GG.png";
-import VP from "../public/assests/vp.png";
+// Use public paths directly to avoid build-time module resolution issues on Netlify/Linux
 
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa6";
@@ -303,11 +298,11 @@ export default function Home() {
                   />
 
                   <Image
-                    src={profileImage1}
+                    src="/assests/my1..png"
                     alt="Profile"
                     width={550}
                     height={700}
-                    className="relative z-10 object-cover rounded-xl max-w-full h-auto"
+                    className="relative z-10 object-cover rounded-xl w-auto h-auto max-w-full"
                     priority
                   />
                 </motion.div>
@@ -349,7 +344,7 @@ export default function Home() {
                   />
 
                   <Image
-                    src={profileImage}
+                    src="/assests/AM.png"
                     alt="About Me"
                     width={420}
                     height={420}
@@ -512,7 +507,7 @@ export default function Home() {
                     </a>
                   </div>
                   <div className="mt-3">
-                    <Image src={zenny} alt="Zenny Project" width={600} height={400} className="w-full h-auto rounded-md border border-white/10" />
+                    <Image src="/assests/p1.png" alt="Zenny Project" width={600} height={400} className="w-full h-auto rounded-md border border-white/10" />
                   </div>
                   <p className="mt-3 text-sm text-gray-300">
                     Zenny is a user-friendly Android app built with Kotlin and Room Database for local data.
@@ -539,7 +534,7 @@ export default function Home() {
                     </a>
                   </div>
                   <div className="mt-3">
-                    <Image src={FF} alt="Fabric Flow" width={900} height={600} className="w-full h-auto rounded-md border border-white/10" />
+                    <Image src="/assests/FF.jpeg" alt="Fabric Flow" width={900} height={600} className="w-full h-auto rounded-md border border-white/10" />
                   </div>
                   <p className="mt-3 text-sm text-gray-300">
                     MERN stack app to streamline fabric and apparel workflows.
@@ -566,7 +561,7 @@ export default function Home() {
                     </a>
                   </div>
                   <div className="mt-3">
-                    <Image src={GG} alt="GlitchZone Gaming" width={600} height={400} className="w-full h-auto rounded-md border border-white/10" />
+                    <Image src="/assests/GG.png" alt="GlitchZone Gaming" width={600} height={400} className="w-full h-auto rounded-md border border-white/10" />
                   </div>
                   <p className="mt-3 text-sm text-gray-300">
                     Web-based gaming platform built with HTML, CSS, and JavaScript.
@@ -593,7 +588,7 @@ export default function Home() {
                     </a>
                   </div>
                   <div className="mt-3">
-                    <Image src={VP} alt="Vax Portal" width={600} height={400} className="w-full h-auto rounded-md border border-white/10" />
+                    <Image src="/assests/vp.png" alt="Vax Portal" width={600} height={400} className="w-full h-auto rounded-md border border-white/10" />
                   </div>
                   <p className="mt-3 text-sm text-gray-300">
                     Web app using HTML, CSS and PHP to manage vaccine registrations.
