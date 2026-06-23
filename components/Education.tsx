@@ -32,7 +32,7 @@ export default function Education() {
     },
     {
       year: "2007 - 2016",
-      title: "Primary & Junior Secondary Education",
+      title: "Primary Education",
       institution: "B/Andaulpotha National School",
     },
   ];
