@@ -1,180 +1,292 @@
 "use client";
-import React from "react";
-import Image from "next/image";
-import { FaGithub } from "react-icons/fa";
-import { motion } from "framer-motion";
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaGithub, FaExternalLinkAlt, FaCode, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const projects = [
-  {
-    title: "NourishNet",
-    subtitle: "Zero Hunger Management System",
-    technologies: ["MERN Stack", "Tailwind CSS", "Authentication", "Admin Dashboard"],
-    github: "https://github.com/Theekshana-Jayalath",
-    image: "/assests/FF.jpeg",
-  },
-  {
-    title: "MediSphere",
-    subtitle: "Doctor Channeling System",
-    technologies: ["MERN Stack", "Tailwind CSS", "Docker", "Microservices"],
-    github: "https://github.com/Theekshana-Jayalath",
-    image: "/assests/FF.jpeg",
-  },
-  {
-    title: "FabricFlow",
-    subtitle: "Apparel Manufacturing Management",
-    technologies: ["MERN Stack", "Tailwind CSS", "Distribution Management"],
-    github: "https://github.com/Theekshana-Jayalath/FabricFlow-frontend",
-    image: "/assests/FF.jpeg",
-  },
-  {
-    title: "Zenny",
-    subtitle: "Daily Habit Routine Mobile App",
-    technologies: ["Kotlin", "Room Database", "Android Studio"],
-    github: "https://github.com/Theekshana-Jayalath/ZennyRoomDB",
-    image: "/assests/FF.jpeg",
-  },
-  {
-    title: "Curvo Currency",
-    subtitle: "Currency Exchange Web App",
-    technologies: ["MERN Stack", "API Integration", "Real-time Data"],
-    github: "https://github.com/Theekshana-Jayalath",
-    image: "/assests/FF.jpeg",
-  },
-];
+interface Project {
+  title: string;
+  subtitle: string;
+  category: "mern" | "mobile" | "web";
+  technologies: string[];
+  github: string;
+  demo?: string;
+}
 
 export default function Projects() {
-  return (
-    <section
-      id="Projects"
-      className="min-h-screen py-20 sm:py-24 md:py-32 scroll-mt-20 px-4 sm:px-6 md:px-10
-                 bg-linear-to-b from-[#0b1020] via-[#0e1530] to-[#0a0f25]"
-    >
-      <div className="w-full max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.3 }}
-          transition={{ type: "spring", stiffness: 100, damping: 20 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-6xl font-bold mb-4 bg-linear-to-b from-[#7717ae] via-[#b64dea] to-[#c596d8] bg-clip-text text-transparent">
-            Build Journal
-          </h2>
-          <div className="h-1 w-24 bg-linear-to-r from-purple-500 via-pink-500 to-purple-500 rounded-full mx-auto"></div>
-          <p className="mt-6 text-gray-400 text-lg">Showcasing my latest projects and innovations</p>
-        </motion.div>
+  const projects: Project[] = [
+    {
+      title: "NourishNet",
+      subtitle: "Zero Hunger Management System",
+      category: "mern",
+      technologies: ["MERN Stack", "Tailwind CSS", "Authentication", "Admin Dashboard"],
+      github: "https://github.com/Theekshana-Jayalath",
+      demo: "https://github.com/Theekshana-Jayalath",
+    },
+    {
+      title: "MediSphere",
+      subtitle: "Doctor Channeling System",
+      category: "mern",
+      technologies: ["MERN Stack", "Tailwind CSS", "Docker", "Microservices"],
+      github: "https://github.com/Theekshana-Jayalath",
+      demo: "https://github.com/Theekshana-Jayalath",
+    },
+    {
+      title: "FabricFlow",
+      subtitle: "Apparel Manufacturing Management",
+      category: "mern",
+      technologies: ["MERN Stack", "Tailwind CSS", "Distribution Management"],
+      github: "https://github.com/Theekshana-Jayalath/FabricFlow-frontend",
+      demo: "https://github.com/Theekshana-Jayalath/FabricFlow-frontend",
+    },
+    {
+      title: "Zenny",
+      subtitle: "Daily Habit Routine Mobile App",
+      category: "mobile",
+      technologies: ["Kotlin", "Room Database", "Android Studio"],
+      github: "https://github.com/Theekshana-Jayalath/ZennyRoomDB",
+      demo: "https://github.com/Theekshana-Jayalath/ZennyRoomDB",
+    },
+    {
+      title: "Curvo Currency",
+      subtitle: "Currency Exchange Web App",
+      category: "web",
+      technologies: ["MERN Stack", "API Integration", "Real-time Data"],
+      github: "https://github.com/Theekshana-Jayalath",
+      demo: "https://github.com/Theekshana-Jayalath",
+    },
+  ];
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {projects.map((project, idx) => (
-            <ProjectCard key={idx} project={project} index={idx} />
+  const categories = [
+    { id: "all", label: "All Projects" },
+    { id: "mern", label: "MERN Stack" },
+    { id: "mobile", label: "Mobile Apps" },
+    { id: "web", label: "Web Integrations" },
+  ];
+
+  const [activeFilter, setActiveFilter] = useState("all");
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Filter projects based on choice
+  const filteredProjects = projects.filter(
+    (p) => activeFilter === "all" || p.category === activeFilter
+  );
+
+  // Horizontal scroll handler
+  const handleScroll = (direction: "left" | "right") => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      // Scroll by 85% of visible container width
+      const scrollAmount = clientWidth * 0.85;
+      const scrollTo = direction === "left"
+        ? scrollLeft - scrollAmount
+        : scrollLeft + scrollAmount;
+
+      scrollRef.current.scrollTo({
+        left: scrollTo,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  return (
+    <section id="Projects" className="relative py-24 sm:py-32 scroll-mt-20 overflow-hidden">
+      {/* Background ambient light */}
+      <div className="absolute left-1/10 top-1/4 w-96 h-96 bg-pink-900/10 rounded-full blur-[120px] pointer-events-none" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+
+        {/* Section Header with Left/Right Buttons */}
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between mb-12 gap-6">
+          <div className="flex flex-col items-center md:items-start text-center md:text-left">
+            <h4 className="text-xs uppercase tracking-widest text-pink-400 font-semibold mb-2">
+              My Built Catalog
+            </h4>
+            <h2 className="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-purple-400 via-fuchsia-500 to-pink-500 bg-clip-text text-transparent">
+              Featured Projects
+            </h2>
+            <div className="h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mt-4 w-20" />
+          </div>
+
+          {/* Slider controls for desktop navigation */}
+          {filteredProjects.length > 0 && (
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => handleScroll("left")}
+                className="w-11 h-11 rounded-full border border-white/10 bg-[#050B2D]/60 hover:bg-white/10 text-white flex items-center justify-center transition-all hover:border-pink-500/30 active:scale-95 cursor-pointer shadow-md"
+                aria-label="Scroll left"
+              >
+                <FaChevronLeft className="text-sm" />
+              </button>
+              <button
+                onClick={() => handleScroll("right")}
+                className="w-11 h-11 rounded-full border border-white/10 bg-[#050B2D]/60 hover:bg-white/10 text-white flex items-center justify-center transition-all hover:border-pink-500/30 active:scale-95 cursor-pointer shadow-md"
+                aria-label="Scroll right"
+              >
+                <FaChevronRight className="text-sm" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Filters */}
+        <div className="flex flex-wrap justify-center lg:justify-start gap-2 mb-10">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveFilter(cat.id)}
+              className={`px-5 py-2 rounded-full text-xs font-semibold tracking-wide border transition-all duration-300 cursor-pointer ${activeFilter === cat.id
+                  ? "bg-gradient-to-r from-purple-600 to-pink-600 border-white/20 text-white shadow-md shadow-pink-950/40"
+                  : "bg-white/5 border-white/5 text-white/60 hover:text-white hover:bg-white/10"
+                }`}
+            >
+              {cat.label}
+            </button>
           ))}
         </div>
+
+        {/* Horizontal Scroll Showcase Panel */}
+        {filteredProjects.length > 0 ? (
+          <div
+            ref={scrollRef}
+            className="flex gap-6 overflow-x-auto pb-10 pt-4 px-2 -mx-2 snap-x snap-mandatory no-scrollbar scroll-smooth cursor-grab active:cursor-grabbing"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredProjects.map((project) => (
+                <div
+                  key={project.title}
+                  className="w-[280px] xs:w-[310px] sm:w-[360px] md:w-[380px] shrink-0 snap-center"
+                >
+                  <ProjectCard project={project} />
+                </div>
+              ))}
+            </AnimatePresence>
+          </div>
+        ) : (
+          <div className="text-center py-12 text-gray-500 font-medium">
+            No projects found in this category.
+          </div>
+        )}
+
       </div>
     </section>
   );
 }
 
 interface ProjectCardProps {
-  project: (typeof projects)[0];
-  index: number;
+  project: Project;
 }
 
-function ProjectCard({ project, index }: ProjectCardProps) {
+function ProjectCard({ project }: ProjectCardProps) {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    // Limit rotation to maximum 10 degrees
+    const tiltX = (mouseY / (height / 2)) * -10;
+    const tiltY = (mouseX / (width / 2)) * 10;
+    setTilt({ x: tiltX, y: tiltY });
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: false, amount: 0.2 }}
-      transition={{
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        delay: index * 0.1,
-      }}
-      whileHover={{ y: -12 }}
-      className="group relative h-96 rounded-2xl overflow-hidden cursor-pointer"
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      transition={{ duration: 0.4 }}
+      className="h-full"
     >
-      {/* Background Image */}
-      <Image
-        src={project.image}
-        alt={project.title}
-        width={600}
-        height={400}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
+      {/* Interactive 3D tilt frame without images */}
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+          transformStyle: "preserve-3d",
+        }}
+        className="glass-panel-glow w-full h-full rounded-3xl border border-white/10 overflow-hidden flex flex-col justify-between relative transition-transform duration-100 ease-out shadow-[0_15px_35px_rgba(0,0,0,0.4)] group hover:border-pink-500/30"
+      >
+        {/* Background subtle neon glow overlay */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2A0055]/30 to-[#8B005D]/20 z-0 pointer-events-none" />
 
-      {/* Multi-layer Overlay */}
-      <div className="absolute inset-0 bg-linear-to-t from-[#0b1020] via-[#0b1020]/40 to-transparent group-hover:from-[#0a0f25] transition-all duration-300" />
-      
-      {/* Accent Gradient Overlay */}
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-linear-to-br from-purple-500 via-pink-500 to-transparent" />
+        {/* Ambient glow inside card */}
+        <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/5 rounded-full blur-2xl z-0 pointer-events-none group-hover:bg-pink-500/10 transition-colors" />
 
-      {/* Content Container */}
-      <div className="relative h-full flex flex-col justify-between p-6">
-        {/* Top: GitHub Link */}
-        <div className="flex justify-end">
-          <motion.a
-            href={project.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.15, rotate: 5 }}
-            whileTap={{ scale: 0.9 }}
-            className="p-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/80 hover:text-pink-400 hover:bg-pink-500/20 hover:border-pink-500/50 transition-all duration-300"
-          >
-            <FaGithub className="text-xl" />
-          </motion.a>
-        </div>
-
-        {/* Bottom: Project Info */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="space-y-4"
-        >
-          {/* Title Section */}
+        <div className="z-10 flex flex-col h-full justify-between p-6 sm:p-8 relative min-h-[260px]">
           <div>
-            <h3 className="text-2xl font-bold text-white mb-1">
-              {project.title}
-            </h3>
-            <p className="text-sm text-purple-300/90 font-medium">
-              {project.subtitle}
-            </p>
+            {/* Top row: Category tag + Code bracket icon */}
+            <div className="flex items-center justify-between mb-6">
+              <span className="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-[9px] font-bold uppercase text-pink-400 tracking-wider">
+                {project.category === "mern" ? "MERN Stack" : project.category === "mobile" ? "Mobile App" : "Web Integration"}
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-pink-400 group-hover:scale-110 transition-transform">
+                <FaCode className="text-sm" />
+              </div>
+            </div>
+
+            {/* Content Panel */}
+            <div className="space-y-4" style={{ transform: "translateZ(20px)" }}>
+              <div>
+                <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-pink-400 transition-colors duration-300">
+                  {project.title}
+                </h3>
+                <p className="text-xs text-purple-300 font-semibold tracking-wide mt-1.5">
+                  {project.subtitle}
+                </p>
+              </div>
+
+              {/* Tech Badges */}
+              <div className="flex flex-wrap gap-1.5 pt-2">
+                {project.technologies.map((tech) => (
+                  <span
+                    key={tech}
+                    className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] text-gray-300 backdrop-blur-sm"
+                  >
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
-          {/* Technologies */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.15 }}
-            className="flex flex-wrap gap-2"
-          >
-            {project.technologies.slice(0, 3).map((tech, idx) => (
-              <span
-                key={idx}
-                className="px-2.5 py-1 text-xs font-medium rounded-full bg-white/10 border border-white/20 text-pink-300 backdrop-blur-sm hover:bg-pink-500/20 hover:border-pink-400/50 transition-all duration-300"
+          {/* Action Buttons */}
+          <div className="pt-6 border-t border-white/5 mt-6 flex gap-3" style={{ transform: "translateZ(15px)" }}>
+            <a
+              href={project.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-1 py-2 rounded-full text-[10px] font-semibold tracking-wider border border-white/10 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center gap-1.5 backdrop-blur-sm transition-all duration-300 hover:border-pink-500/30 text-center cursor-pointer"
+            >
+              <FaGithub className="text-xs" />
+              GitHub
+            </a>
+            {project.demo && (
+              <a
+                href={project.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-2 rounded-full text-[10px] font-semibold tracking-wider bg-gradient-to-r from-purple-600 to-pink-600 text-white flex items-center justify-center gap-1.5 transition-all duration-300 hover:opacity-95 shadow-md shadow-pink-950/40 text-center cursor-pointer"
               >
-                {tech}
-              </span>
-            ))}
-            {project.technologies.length > 3 && (
-              <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-white/10 border border-white/20 text-purple-300">
-                +{project.technologies.length - 3}
-              </span>
+                <FaExternalLinkAlt className="text-[9px]" />
+                Live Demo
+              </a>
             )}
-          </motion.div>
-        </motion.div>
-      </div>
+          </div>
+        </div>
 
-      {/* Glow Effect on Hover */}
-      <motion.div
-        className="absolute -inset-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-2xl pointer-events-none"
-        style={{
-          background: "radial-gradient(circle, rgba(236, 72, 153, 0.15), transparent 70%)",
-        }}
-      />
+      </div>
     </motion.div>
   );
 }

@@ -1,20 +1,28 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Poppins, Dancing_Script, Outfit } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  weight: ["300", "400", "500", "600", "700", "800"],
   subsets: ["latin"],
+  variable: "--font-poppins",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const dancingScript = Dancing_Script({
+  weight: ["400", "700"],
   subsets: ["latin"],
+  variable: "--font-cursive",
+});
+
+const outfit = Outfit({
+  weight: ["400", "500", "600", "700", "800", "900"],
+  subsets: ["latin"],
+  variable: "--font-outfit",
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio website",
-  description: "My personal portfolio website",
+  title: "Theekshana Pabodi | Software Engineer Portfolio",
+  description: "Personal portfolio of Theekshana Pabodi, Software Engineer & Full Stack Web Developer. Modern interactive developer portfolio showcases projects, skills, education, and experience.",
   icons: {
     icon: [
       { url: "/fav.png?v=1", type: "image/png" },
@@ -30,12 +38,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${poppins.variable} ${dancingScript.variable} ${outfit.variable} font-sans antialiased bg-brand-navy text-white`}
       >
         {children}
       </body>
     </html>
   );
 }
+
