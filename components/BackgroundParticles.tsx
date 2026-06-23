@@ -16,12 +16,16 @@ export default function BackgroundParticles() {
     let height = (canvas.height = window.innerHeight);
 
     const particles: Particle[] = [];
-    const particleCount = Math.min(Math.floor((width * height) / 15000), 100);
+    // Scale particle count based on screen size for performance
+    const isMobileDevice = width < 768;
+    const particleCount = isMobileDevice
+      ? Math.min(Math.floor((width * height) / 25000), 30)
+      : Math.min(Math.floor((width * height) / 20000), 60);
 
     const mouse = {
       x: null as number | null,
       y: null as number | null,
-      radius: 150,
+      radius: 130, // Slightly reduced interaction radius
     };
 
     class Particle {
@@ -117,14 +121,16 @@ export default function BackgroundParticles() {
           const p2 = particles[j];
           const dx = p1.x - p2.x;
           const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 120) {
+          // Performance Optimization: Check squared distance first to avoid expensive Math.sqrt calculation
+          const distSq = dx * dx + dy * dy;
+          if (distSq < 14400) { // 120 * 120 = 14400
+            const dist = Math.sqrt(distSq);
             ctx.beginPath();
             ctx.moveTo(p1.x, p1.y);
             ctx.lineTo(p2.x, p2.y);
             // Dynamic opacity based on distance
-            const alpha = (120 - dist) / 120 * 0.08;
+            const alpha = ((120 - dist) / 120) * 0.08;
             ctx.strokeStyle = `rgba(106, 13, 173, ${alpha})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();

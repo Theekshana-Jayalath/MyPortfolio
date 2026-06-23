@@ -56,7 +56,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
     <>
       {/* Navbar Container */}
       <header
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4 ${scrolled ? "bg-[#050B2D]/85 backdrop-blur-md border-b border-white/5 py-3" : "bg-transparent"
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 py-4 ${scrolled ? "bg-brand-navy/85 backdrop-blur-md border-b border-white/5 py-3" : "bg-transparent"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
@@ -132,7 +132,7 @@ export default function Navigation({ activeSection }: NavigationProps) {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}
-              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-[#050B2D]/95 border-l border-white/10 z-50 p-6 flex flex-col justify-between lg:hidden"
+              className="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-brand-navy/95 border-l border-white/10 z-50 p-6 flex flex-col justify-between lg:hidden"
             >
               <div>
                 {/* Header */}

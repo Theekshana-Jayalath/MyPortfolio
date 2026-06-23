@@ -68,7 +68,7 @@ export default function Experience() {
                 >
 
                   {/* Outer circle dot on line */}
-                  <div className="absolute left-4 md:left-1/2 w-6 h-6 rounded-full bg-[#050B2D] border-2 border-purple-500 flex items-center justify-center -translate-x-1/2 z-10 shadow-[0_0_12px_rgba(106,13,173,0.5)]">
+                  <div className="absolute left-4 md:left-1/2 w-6 h-6 rounded-full bg-brand-navy border-2 border-purple-500 flex items-center justify-center -translate-x-1/2 z-10 shadow-[0_0_12px_rgba(106,13,173,0.5)]">
                     <div className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
                   </div>
 

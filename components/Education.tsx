@@ -72,7 +72,7 @@ export default function Education() {
                 >
 
                   {/* Outer circle dot on line */}
-                  <div className="absolute left-4 md:left-1/2 w-6 h-6 rounded-full bg-[#050B2D] border-2 border-pink-500 flex items-center justify-center -translate-x-1/2 z-10 shadow-[0_0_12px_rgba(236,72,153,0.5)]">
+                  <div className="absolute left-4 md:left-1/2 w-6 h-6 rounded-full bg-brand-navy border-2 border-pink-500 flex items-center justify-center -translate-x-1/2 z-10 shadow-[0_0_12px_rgba(236,72,153,0.5)]">
                     <div className="w-2 h-2 rounded-full bg-pink-400 animate-ping" />
                   </div>
 

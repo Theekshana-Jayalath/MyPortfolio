@@ -29,7 +29,7 @@ export async function POST(request: Request) {
       subject: `New Portfolio Message from ${name}`,
       text: `You have received a new message from your portfolio contact form:\n\nName: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
       html: `
-        <div style="font-family: Arial, sans-serif; padding: 25px; background-color: #050B2D; color: #FFFFFF; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); max-width: 600px;">
+        <div style="font-family: Arial, sans-serif; padding: 25px; background-color: #02051A; color: #FFFFFF; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); max-width: 600px;">
           <h2 style="color: #F472B6; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-top: 0;">New Contact Message</h2>
           <p style="margin: 15px 0;"><strong style="color: #C084FC;">Name:</strong> ${name}</p>
           <p style="margin: 15px 0;"><strong style="color: #C084FC;">Email:</strong> <a href="mailto:${email}" style="color: #38BDF8; text-decoration: none;">${email}</a></p>

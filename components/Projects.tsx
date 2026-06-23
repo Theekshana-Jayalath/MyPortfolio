@@ -112,14 +112,14 @@ export default function Projects() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => handleScroll("left")}
-                className="w-11 h-11 rounded-full border border-white/10 bg-[#050B2D]/60 hover:bg-white/10 text-white flex items-center justify-center transition-all hover:border-pink-500/30 active:scale-95 cursor-pointer shadow-md"
+                className="w-11 h-11 rounded-full border border-white/10 bg-brand-navy/60 hover:bg-white/10 text-white flex items-center justify-center transition-all hover:border-pink-500/30 active:scale-95 cursor-pointer shadow-md"
                 aria-label="Scroll left"
               >
                 <FaChevronLeft className="text-sm" />
               </button>
               <button
                 onClick={() => handleScroll("right")}
-                className="w-11 h-11 rounded-full border border-white/10 bg-[#050B2D]/60 hover:bg-white/10 text-white flex items-center justify-center transition-all hover:border-pink-500/30 active:scale-95 cursor-pointer shadow-md"
+                className="w-11 h-11 rounded-full border border-white/10 bg-brand-navy/60 hover:bg-white/10 text-white flex items-center justify-center transition-all hover:border-pink-500/30 active:scale-95 cursor-pointer shadow-md"
                 aria-label="Scroll right"
               >
                 <FaChevronRight className="text-sm" />

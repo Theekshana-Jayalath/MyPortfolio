@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --background: #050B2D;
+  --background: #02051A;
   --foreground: #FFFFFF;
 }
 
 @theme {
-  --color-brand-navy: #050B2D;
+  --color-brand-navy: #02051A;
   --color-brand-purple: #2A0055;
   --color-brand-magenta: #8B005D;
   --color-brand-accent: #6A0DAD;
@@ -62,7 +62,7 @@ body {
   width: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  background-color: #050B2D;
+  background-color: #02051A;
   color: #FFFFFF;
 }
 
@@ -83,13 +83,13 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #050B2D;
+  background: #02051A;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #2A0055;
   border-radius: 4px;
-  border: 2px solid #050B2D;
+  border: 2px solid #02051A;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -114,7 +114,7 @@ body {
 }
 
 .glass-nav {
-  background: rgba(5, 11, 45, 0.4);
+  background: rgba(2, 5, 26, 0.4);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.07);

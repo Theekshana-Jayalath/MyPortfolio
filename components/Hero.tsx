@@ -237,7 +237,7 @@ export default function Hero() {
               <div className="absolute -inset-4 bg-gradient-to-r from-purple-600 via-fuchsia-600 to-pink-600 rounded-full blur-3xl opacity-30 group-hover:opacity-40 transition-opacity duration-500 -z-10" />
 
               {/* Glassmorphic border ring container */}
-              <div className="absolute inset-0 bg-[#050B2D]/40 backdrop-blur-xl rounded-full border border-white/10 group-hover:border-pink-500/30 overflow-hidden flex items-center justify-center p-3 shadow-2xl transition-all duration-300">
+              <div className="absolute inset-0 bg-brand-navy/40 backdrop-blur-xl rounded-full border border-white/10 group-hover:border-pink-500/30 overflow-hidden flex items-center justify-center p-3 shadow-2xl transition-all duration-300">
 
                 {/* Internal dynamic spinning gradient glow ring */}
                 <div className="absolute inset-0 bg-gradient-to-br from-[#2A0055]/30 via-transparent to-[#8B005D]/30 opacity-60 z-0" />
@@ -257,7 +257,7 @@ export default function Hero() {
                         key="intro-animation"
                         initial={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9, transition: { duration: 0.4 } }}
-                        className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-[#050b2d]"
+                        className="absolute inset-0 flex flex-col items-center justify-center p-4 bg-brand-navy"
                       >
                         {/* Waving Character Vector SVG */}
                         <svg

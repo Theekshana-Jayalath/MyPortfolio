@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Navigation from "../components/Navigation";
 import Hero from "../components/Hero";
 import About from "../components/About";
@@ -13,21 +13,25 @@ import Footer from "../components/Footer";
 import GoToTop from "../components/GoToTop";
 import BackgroundParticles from "../components/BackgroundParticles";
 
-// Mouse spotlight glow overlay
+// Mouse spotlight glow overlay (Optimized: Updates style variables directly to bypass React renders)
 function MouseSpotlight() {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [opacity, setOpacity] = useState(0);
+  const spotlightRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const spotlight = spotlightRef.current;
+    if (!spotlight) return;
+
     const handleMouseMove = (e: MouseEvent) => {
-      setCoords({ x: e.clientX, y: e.clientY });
-      setOpacity(1);
+      spotlight.style.setProperty("--mouse-x", `${e.clientX}px`);
+      spotlight.style.setProperty("--mouse-y", `${e.clientY}px`);
+      spotlight.style.opacity = "1";
     };
     const handleMouseLeave = () => {
-      setOpacity(0);
+      spotlight.style.opacity = "0";
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseleave", handleMouseLeave);
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("mouseleave", handleMouseLeave, { passive: true });
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseleave", handleMouseLeave);
@@ -36,10 +40,11 @@ function MouseSpotlight() {
 
   return (
     <div
+      ref={spotlightRef}
       className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-500"
       style={{
-        background: `radial-gradient(800px at ${coords.x}px ${coords.y}px, rgba(139, 0, 93, 0.08), rgba(106, 13, 173, 0.08), transparent 80%)`,
-        opacity,
+        background: `radial-gradient(800px at var(--mouse-x, 0px) var(--mouse-y, 0px), rgba(139, 0, 93, 0.08), rgba(106, 13, 173, 0.08), transparent 80%)`,
+        opacity: 0,
       }}
     />
   );
@@ -48,37 +53,33 @@ function MouseSpotlight() {
 export default function Home() {
   const [activeSection, setActiveSection] = useState<string>("Home");
 
-  // Track active section on scroll
+  // Track active section using IntersectionObserver (Optimized: Avoids scroll listeners & layout thrashing offsetTop reads)
   useEffect(() => {
     const ids = ["Home", "About", "Skills", "Education", "Experience", "Projects", "Certificates", "Contact"];
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter(Boolean) as HTMLElement[];
-
-    const navOffset = 140; // offset value for sticky nav highlight triggering
-    const updateActive = () => {
-      const scrollPos = window.scrollY + navOffset;
-
-      if (window.scrollY < 120) {
-        setActiveSection("Home");
-        return;
-      }
-
-      let current = "Home";
-      for (const el of sections) {
-        const top = el.offsetTop;
-        if (scrollPos >= top) current = el.id;
-      }
-      setActiveSection(current);
+    
+    // We adjust rootMargin to target the upper-middle portion of the screen (active zone)
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -55% 0px",
+      threshold: 0,
     };
 
-    updateActive();
-    window.addEventListener("scroll", updateActive, { passive: true });
-    window.addEventListener("resize", updateActive);
-    return () => {
-      window.removeEventListener("scroll", updateActive);
-      window.removeEventListener("resize", updateActive);
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
     };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    ids.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
   }, []);
 
   return (
