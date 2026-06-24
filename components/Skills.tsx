@@ -29,8 +29,8 @@ export default function Skills() {
       skills: [
         { name: "JavaScript", icon: FaJs },
         { name: "React", icon: FaReact },
-        { name: "HTML5", icon: FaHtml5 },
-        { name: "CSS3 / Tailwind", icon: FaCss3Alt },
+        { name: "HTML", icon: FaHtml5 },
+        { name: "CSS / Tailwind", icon: FaCss3Alt },
         { name: "Java", icon: FaJava },
         { name: "Python", icon: FaPython },
         { name: "PHP", icon: FaCode },
