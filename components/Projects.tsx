@@ -8,6 +8,8 @@ interface Project {
   subtitle: string;
   category: "mern" | "mobile" | "web";
   technologies: string[];
+  description: string;
+  image?: string;
   github: string;
   demo?: string;
 }
@@ -16,43 +18,50 @@ export default function Projects() {
   const projects: Project[] = [
     {
       title: "NourishNet",
-      subtitle: "Zero Hunger Management System",
+      subtitle: "Zero Hunger Management System (MVC)",
       category: "mern",
-      technologies: ["MERN Stack", "Tailwind CSS", "Authentication", "Admin Dashboard"],
+      technologies: ["MERN", "Tailwind CSS"],
+      description: "A zero-hunger platform connecting NGOs, donors, and drivers with role-based dashboards, inventory management, and participant workflows.",
+      image: "/assests/nourishnet.png",
       github: "https://github.com/Theekshana-Jayalath",
-      demo: "https://github.com/Theekshana-Jayalath",
+      demo: "https://nourishnetzh.vercel.app/",
     },
     {
       title: "MediSphere",
-      subtitle: "Doctor Channeling System",
+      subtitle: "Doctor Channeling System (Microservices)",
       category: "mern",
-      technologies: ["MERN Stack", "Tailwind CSS", "Docker", "Microservices"],
+      technologies: ["MERN", "Docker", "PayHere"],
+      description: "Microservices-based appointment and payment platform featuring doctor filtering, appointment tracking, and secure PayHere integration.",
+      image: "/assests/medisphere.png",
       github: "https://github.com/Theekshana-Jayalath",
-      demo: "https://github.com/Theekshana-Jayalath",
     },
     {
       title: "FabricFlow",
-      subtitle: "Apparel Manufacturing Management",
+      subtitle: "Apparel Manufacturing Management (MVC)",
       category: "mern",
-      technologies: ["MERN Stack", "Tailwind CSS", "Distribution Management"],
+      technologies: ["MERN", "Tailwind CSS"],
+      description: "Comprehensive distribution management module designed to efficiently track and manage drivers and delivery vehicles.",
+      image: "/assests/fabricflow.png",
       github: "https://github.com/Theekshana-Jayalath/FabricFlow-frontend",
-      demo: "https://github.com/Theekshana-Jayalath/FabricFlow-frontend",
+      demo: "https://fabric-flow-eta.vercel.app/",
     },
     {
       title: "Zenny",
       subtitle: "Daily Habit Routine Mobile App",
       category: "mobile",
-      technologies: ["Kotlin", "Room Database", "Android Studio"],
+      technologies: ["Kotlin", "Room Database"],
+      description: "Habit-tracking mobile application featuring daily reminders, progress visualization, and offline storage via Room Database.",
       github: "https://github.com/Theekshana-Jayalath/ZennyRoomDB",
-      demo: "https://github.com/Theekshana-Jayalath/ZennyRoomDB",
     },
     {
       title: "Curvo Currency",
-      subtitle: "Currency Exchange Web App",
+      subtitle: "Currency Exchange Web Application",
       category: "web",
-      technologies: ["MERN Stack", "API Integration", "Real-time Data"],
+      technologies: ["MERN Stack", "APIs"],
+      description: "Real-time currency converter utilizing external APIs to deliver accurate, fast conversions through a highly responsive interface.",
+      image: "/assests/curvocurrency.png",
       github: "https://github.com/Theekshana-Jayalath",
-      demo: "https://github.com/Theekshana-Jayalath",
+      demo: "https://curvo-currency-converter.vercel.app/",
     },
   ];
 
@@ -216,60 +225,72 @@ function ProjectCard({ project }: ProjectCardProps) {
           transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
           transformStyle: "preserve-3d",
         }}
-        className="glass-panel-glow w-full h-full rounded-3xl border border-white/10 overflow-hidden flex flex-col justify-between relative transition-transform duration-100 ease-out shadow-[0_15px_35px_rgba(0,0,0,0.4)] group hover:border-pink-500/30"
+        className="glass-panel-glow w-full h-full rounded-2xl border border-white/10 overflow-hidden flex flex-col relative transition-transform duration-300 ease-out shadow-[0_15px_35px_rgba(0,0,0,0.4)] group hover:border-pink-500/30 bg-[#0a0014]"
       >
-        {/* Background subtle neon glow overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#2A0055]/30 to-[#8B005D]/20 z-0 pointer-events-none" />
+        {/* Top Image Section */}
+        <div className="w-full h-44 sm:h-48 relative overflow-hidden bg-white/5 border-b border-white/5 shrink-0 flex items-center justify-center p-4">
+          {/* Ambient glow behind image */}
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-500/10 to-purple-600/10 z-0 pointer-events-none group-hover:opacity-100 opacity-50 transition-opacity duration-500" />
+          
+          {project.image ? (
+            <img 
+              src={project.image} 
+              alt={project.title} 
+              className="w-full h-full object-contain relative z-10 group-hover:scale-110 transition-transform duration-700 ease-out drop-shadow-xl" 
+            />
+          ) : (
+            <div className="relative z-10 flex flex-col items-center justify-center text-white/20">
+               <FaCode className="text-4xl mb-2 opacity-50" />
+               <span className="text-xs font-semibold uppercase tracking-widest">{project.title}</span>
+            </div>
+          )}
+          
+          {/* Category Badge */}
+          <div className="absolute top-3 left-3 z-20">
+             <span className="px-3 py-1 rounded-full bg-black/60 border border-white/10 text-[9px] font-bold uppercase text-pink-400 tracking-wider backdrop-blur-md shadow-sm">
+                {project.category === "mern" ? "MERN Stack" : project.category === "mobile" ? "Mobile App" : "Web App"}
+             </span>
+          </div>
+        </div>
 
-        {/* Ambient glow inside card */}
-        <div className="absolute top-0 right-0 w-24 h-24 bg-pink-500/5 rounded-full blur-2xl z-0 pointer-events-none group-hover:bg-pink-500/10 transition-colors" />
-
-        <div className="z-10 flex flex-col h-full justify-between p-6 sm:p-8 relative min-h-[260px]">
-          <div>
-            {/* Top row: Category tag + Code bracket icon */}
-            <div className="flex items-center justify-between mb-6">
-              <span className="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 text-[9px] font-bold uppercase text-pink-400 tracking-wider">
-                {project.category === "mern" ? "MERN Stack" : project.category === "mobile" ? "Mobile App" : "Web Integration"}
-              </span>
-              <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-pink-400 group-hover:scale-110 transition-transform">
-                <FaCode className="text-sm" />
-              </div>
+        {/* Bottom Content Section */}
+        <div className="p-5 sm:p-6 flex flex-col flex-grow relative z-10 bg-gradient-to-b from-transparent to-black/40">
+          <div className="space-y-3" style={{ transform: "translateZ(20px)" }}>
+            <div>
+              <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-pink-300 transition-colors duration-300 drop-shadow-md line-clamp-1">
+                {project.title}
+              </h3>
+              <p className="text-[11px] sm:text-xs text-purple-200 font-medium tracking-wide mt-1 drop-shadow-md line-clamp-1">
+                {project.subtitle}
+              </p>
             </div>
 
-            {/* Content Panel */}
-            <div className="space-y-4" style={{ transform: "translateZ(20px)" }}>
-              <div>
-                <h3 className="text-xl sm:text-2xl font-bold text-white group-hover:text-pink-400 transition-colors duration-300">
-                  {project.title}
-                </h3>
-                <p className="text-xs text-purple-300 font-semibold tracking-wide mt-1.5">
-                  {project.subtitle}
-                </p>
-              </div>
+            <p className="text-[11px] sm:text-[12px] text-gray-300/90 leading-relaxed drop-shadow-sm min-h-[50px] line-clamp-3">
+              {project.description}
+            </p>
 
-              {/* Tech Badges */}
-              <div className="flex flex-wrap gap-1.5 pt-2">
-                {project.technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[10px] text-gray-300 backdrop-blur-sm"
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
+            {/* Tech Badges */}
+            <div className="flex flex-wrap gap-1.5 pt-2">
+              {project.technologies.map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[9px] sm:text-[10px] text-gray-200 backdrop-blur-md shadow-sm"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
           </div>
 
           {/* Action Buttons */}
-          <div className="pt-6 border-t border-white/5 mt-6 flex gap-3" style={{ transform: "translateZ(15px)" }}>
+          <div className="pt-6 mt-auto flex gap-3" style={{ transform: "translateZ(15px)" }}>
             <a
               href={project.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-1 py-2 rounded-full text-[10px] font-semibold tracking-wider border border-white/10 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center gap-1.5 backdrop-blur-sm transition-all duration-300 hover:border-pink-500/30 text-center cursor-pointer"
+              className="flex-1 py-2.5 rounded-xl text-[10px] sm:text-[11px] font-semibold tracking-wider border border-white/10 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center gap-2 backdrop-blur-sm transition-all duration-300 hover:border-pink-500/30 text-center shadow-sm"
             >
-              <FaGithub className="text-xs" />
+              <FaGithub className="text-sm" />
               GitHub
             </a>
             {project.demo && (
@@ -277,9 +298,9 @@ function ProjectCard({ project }: ProjectCardProps) {
                 href={project.demo}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 py-2 rounded-full text-[10px] font-semibold tracking-wider bg-gradient-to-r from-purple-600 to-pink-600 text-white flex items-center justify-center gap-1.5 transition-all duration-300 hover:opacity-95 shadow-md shadow-pink-950/40 text-center cursor-pointer"
+                className="flex-1 py-2.5 rounded-xl text-[10px] sm:text-[11px] font-semibold tracking-wider bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white flex items-center justify-center gap-2 transition-all duration-300 hover:opacity-100 opacity-95 shadow-md shadow-pink-900/50 text-center"
               >
-                <FaExternalLinkAlt className="text-[9px]" />
+                <FaExternalLinkAlt className="text-[10px]" />
                 Live Demo
               </a>
             )}
