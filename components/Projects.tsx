@@ -1,7 +1,12 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaGithub, FaExternalLinkAlt, FaCode, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaGithub, FaExternalLinkAlt, FaCode, FaChevronLeft, FaChevronRight, FaChevronDown } from "react-icons/fa";
+
+interface GithubRepo {
+  name: string;
+  url: string;
+}
 
 interface Project {
   title: string;
@@ -10,7 +15,7 @@ interface Project {
   technologies: string[];
   description: string;
   image?: string;
-  github: string;
+  github: string | GithubRepo[];
   demo?: string;
 }
 
@@ -23,7 +28,10 @@ export default function Projects() {
       technologies: ["MERN", "Tailwind CSS"],
       description: "A zero-hunger platform connecting NGOs, donors, and drivers with role-based dashboards, inventory management, and participant workflows.",
       image: "/assests/nourishnet.png",
-      github: "https://github.com/Theekshana-Jayalath",
+      github: [
+        { name: "Frontend", url: "https://github.com/Theekshana-Jayalath/NourishNet-Frontend" },
+        { name: "Backend", url: "https://github.com/Theekshana-Jayalath/NourishNet-Backend" }
+      ],
       demo: "https://nourishnetzh.vercel.app/",
     },
     {
@@ -33,7 +41,7 @@ export default function Projects() {
       technologies: ["MERN", "Docker", "PayHere"],
       description: "Microservices-based appointment and payment platform featuring doctor filtering, appointment tracking, and secure PayHere integration.",
       image: "/assests/medisphere.png",
-      github: "https://github.com/Theekshana-Jayalath",
+      github: "https://github.com/Theekshana-Jayalath/MediSphere-Microservice-Platform",
     },
     {
       title: "FabricFlow",
@@ -42,7 +50,10 @@ export default function Projects() {
       technologies: ["MERN", "Tailwind CSS"],
       description: "Comprehensive distribution management module designed to efficiently track and manage drivers and delivery vehicles.",
       image: "/assests/fabricflow.png",
-      github: "https://github.com/Theekshana-Jayalath/FabricFlow-frontend",
+      github: [
+        { name: "Frontend", url: "https://github.com/Theekshana-Jayalath/FabricFlow-frontend" },
+        { name: "Backend", url: "https://github.com/Theekshana-Jayalath/FabricFlow-backend" }
+      ],
       demo: "https://fabric-flow-eta.vercel.app/",
     },
     {
@@ -61,7 +72,7 @@ export default function Projects() {
       technologies: ["MERN Stack", "APIs"],
       description: "Real-time currency converter utilizing external APIs to deliver accurate, fast conversions through a highly responsive interface.",
       image: "/assests/curvocurrency.png",
-      github: "https://github.com/Theekshana-Jayalath",
+      github: "https://github.com/Theekshana-Jayalath/CurVo-currency_Converter",
       demo: "https://curvo-currency-converter.vercel.app/",
     },
   ];
@@ -285,15 +296,38 @@ function ProjectCard({ project }: ProjectCardProps) {
 
           {/* Action Buttons */}
           <div className="pt-6 mt-auto flex gap-3" style={{ transform: "translateZ(15px)" }}>
-            <a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 py-2.5 rounded-xl text-[10px] sm:text-[11px] font-semibold tracking-wider border border-white/10 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center gap-2 backdrop-blur-sm transition-all duration-300 hover:border-pink-500/30 text-center shadow-sm"
-            >
-              <FaGithub className="text-sm" />
-              GitHub
-            </a>
+            {typeof project.github === 'string' ? (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 py-2.5 rounded-xl text-[10px] sm:text-[11px] font-semibold tracking-wider border border-white/10 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center gap-2 backdrop-blur-sm transition-all duration-300 hover:border-pink-500/30 text-center shadow-sm"
+              >
+                <FaGithub className="text-sm" />
+                GitHub
+              </a>
+            ) : (
+              <div className="flex-1 relative group">
+                <button className="w-full py-2.5 rounded-xl text-[10px] sm:text-[11px] font-semibold tracking-wider border border-white/10 bg-white/5 hover:bg-white/10 text-white flex items-center justify-center gap-2 backdrop-blur-sm transition-all duration-300 hover:border-pink-500/30 text-center shadow-sm cursor-pointer">
+                  <FaGithub className="text-sm" />
+                  GitHub <FaChevronDown className="text-[8px] ml-1 opacity-70" />
+                </button>
+                <div className="absolute bottom-[calc(100%+8px)] left-0 w-full opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 bg-[#0a0014]/95 border border-pink-500/30 rounded-xl p-1.5 flex flex-col gap-1 backdrop-blur-xl shadow-[0_0_20px_rgba(236,72,153,0.15)] translate-y-2 group-hover:translate-y-0 z-50">
+                  {project.github.map((repo, idx) => (
+                    <a
+                      key={idx}
+                      href={repo.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10px] sm:text-[11px] text-gray-200 hover:text-white hover:bg-white/10 py-2 px-3 rounded-lg transition-all duration-200 flex items-center justify-between"
+                    >
+                      <span>{repo.name}</span>
+                      <FaExternalLinkAlt className="text-[8px] opacity-50" />
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
             {project.demo && (
               <a
                 href={project.demo}
