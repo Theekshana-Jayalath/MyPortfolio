@@ -51,7 +51,7 @@ export default function About() {
         {
           title: "Volleyball",
           subpoints: [
-            "Captain - B/Bandarawela Central College (2016)"
+            // "Captain - B/Bandarawela Central College (2016)"
           ]
         }
       ],
