@@ -51,6 +51,7 @@ export default function Projects() {
       category: "mobile",
       technologies: ["Kotlin", "Room Database"],
       description: "Habit-tracking mobile application featuring daily reminders, progress visualization, and offline storage via Room Database.",
+      image: "/assests/zenny.png",
       github: "https://github.com/Theekshana-Jayalath/ZennyRoomDB",
     },
     {
